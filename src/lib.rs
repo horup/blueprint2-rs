@@ -29,42 +29,35 @@ pub fn start() {
         glow::RenderLoop::from_request_animation_frame()
     );
 
-    render_loop.run(move |running| {
-        unsafe {
-            gl.clear_color(1.0, 0.0, 0.0, 1.0);
-            gl.clear(glow::COLOR_BUFFER_BIT);
+    unsafe {
+
+        let vertex_shader_source = include_str!("./shaders/default.vert");
+        let fragment_shader_source = include_str!("./shaders/default.frag");
+
+        let program = gl.create_program().expect("Cannot create program");
+    
+        let shader = gl.create_shader(glow::VERTEX_SHADER).expect("could not create shader");
+        gl.shader_source(shader, vertex_shader_source);
+        gl.compile_shader(shader);
+        gl.attach_shader(program, shader);
+
+        let shader = gl.create_shader(glow::FRAGMENT_SHADER).expect("could not create shader");
+        gl.shader_source(shader, fragment_shader_source);
+        gl.compile_shader(shader);
+        gl.attach_shader(program, shader);
+
+        gl.link_program(program);
+        if !gl.get_program_link_status(program) {
+            panic!(gl.get_program_info_log(program));
         }
-    }); 
 
-   /* let context = canvas
-        .get_context("2d")
-        .unwrap()
-        .unwrap()
-        .dyn_into::<web_sys::CanvasRenderingContext2d>()
-        .unwrap();
+        gl.use_program(Some(program));
 
-    context.begin_path();
-
-    // Draw the outer circle.
-    context
-        .arc(75.0, 75.0, 50.0, 0.0, f64::consts::PI * 2.0)
-        .unwrap();
-
-    // Draw the mouth.
-    context.move_to(110.0, 75.0);
-    context.arc(75.0, 75.0, 35.0, 0.0, f64::consts::PI).unwrap();
-
-    // Draw the left eye.
-    context.move_to(65.0, 65.0);
-    context
-        .arc(60.0, 65.0, 5.0, 0.0, f64::consts::PI * 2.0)
-        .unwrap();
-
-    // Draw the right eye.
-    context.move_to(95.0, 65.0);
-    context
-        .arc(90.0, 65.0, 5.0, 0.0, f64::consts::PI * 2.0)
-        .unwrap();
-
-    context.stroke();*/
+        render_loop.run(move |running| {
+                gl.clear_color(1.0, 0.0, 0.0, 1.0);
+                gl.clear(glow::COLOR_BUFFER_BIT);
+        }); 
+    }
 }
+
+//https://github.com/grovesNL/glow/blob/main/examples/hello/src/main.rs
