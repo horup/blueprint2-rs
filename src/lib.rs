@@ -34,7 +34,7 @@ pub fn start() {
             gl.clear_color(1.0, 0.0, 0.0, 1.0);
             gl.clear(glow::COLOR_BUFFER_BIT);
         }
-    });
+    }); 
 
    /* let context = canvas
         .get_context("2d")
