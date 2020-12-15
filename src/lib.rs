@@ -1,7 +1,11 @@
 use std::f64;
 use wasm_bindgen::prelude::*;
-use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
+
+use glow::*;
+
+// TODO: add console out functionality
+
 
 #[wasm_bindgen(start)]
 pub fn start() {
@@ -13,7 +17,26 @@ pub fn start() {
         .unwrap();
 
 
-    let context = canvas
+    let webgl2_context = canvas
+        .get_context("webgl2")
+        .unwrap()
+        .unwrap()
+        .dyn_into::<web_sys::WebGl2RenderingContext>()
+        .unwrap();
+
+    let (gl, render_loop) = (
+        glow::Context::from_webgl2_context(webgl2_context),
+        glow::RenderLoop::from_request_animation_frame()
+    );
+
+    render_loop.run(move |running| {
+        unsafe {
+            gl.clear_color(1.0, 0.0, 0.0, 1.0);
+            gl.clear(glow::COLOR_BUFFER_BIT);
+        }
+    });
+
+   /* let context = canvas
         .get_context("2d")
         .unwrap()
         .unwrap()
@@ -43,5 +66,5 @@ pub fn start() {
         .arc(90.0, 65.0, 5.0, 0.0, f64::consts::PI * 2.0)
         .unwrap();
 
-    context.stroke();
+    context.stroke();*/
 }
