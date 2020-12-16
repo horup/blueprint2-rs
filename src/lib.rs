@@ -1,5 +1,5 @@
-mod render;
-pub use render::*;
+pub mod core;
+use crate::core::*;
 
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
