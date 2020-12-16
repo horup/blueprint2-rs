@@ -4,7 +4,14 @@ use wasm_bindgen::JsCast;
 
 use glow::*;
 
-// TODO: add console out functionality
+// TODO: add console out instead of stack exception to improve debugability
+// TODO: add verted buffer to store vertices for triangle drawing
+// TODO: draw triangle
+// TODO: spin the triangle
+// TODO: measure FPS
+// TODO: add timing
+// TODO: refactor code first step
+// TODO: add texture support
 
 
 #[wasm_bindgen(start)]
@@ -53,9 +60,14 @@ pub fn start() {
 
         gl.use_program(Some(program));
 
+
+        let vertex_array = gl.create_vertex_array().expect("cannot create vertex array");
+        gl.bind_vertex_array(Some(vertex_array));
+
         render_loop.run(move |running| {
-                gl.clear_color(1.0, 0.0, 0.0, 1.0);
+                gl.clear_color(0.1, 0.2, 0.3, 1.0);
                 gl.clear(glow::COLOR_BUFFER_BIT);
+                gl.draw_arrays(glow::TRIANGLES, 0, 3);
         }); 
     }
 }
