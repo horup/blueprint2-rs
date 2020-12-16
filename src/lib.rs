@@ -6,7 +6,6 @@ use glow::*;
 
 // TODO: add console out instead of stack exception to improve debugability
 // TODO: add verted buffer to store vertices for triangle drawing
-// TODO: draw triangle
 // TODO: spin the triangle
 // TODO: measure FPS
 // TODO: add timing
@@ -65,6 +64,7 @@ pub fn start() {
         gl.bind_vertex_array(Some(vertex_array));
 
         render_loop.run(move |running| {
+                gl.viewport(0, 0, canvas.width() as i32, canvas.height() as i32);
                 gl.clear_color(0.1, 0.2, 0.3, 1.0);
                 gl.clear(glow::COLOR_BUFFER_BIT);
                 gl.draw_arrays(glow::TRIANGLES, 0, 3);
