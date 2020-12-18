@@ -1,11 +1,29 @@
 use glow::*;
+use wasm_bindgen::prelude::*;
+
+use crate::log;
 
 pub struct Render {
     pub gl:Context,
     pub width:i32,
-    pub height:i32
+    pub height:i32,
+
 }
 
+#[derive(Copy, Clone, Debug)]
+#[repr(C, packed)]
+pub struct Position {
+    pub x:f32,
+    pub y:f32
+}
+
+impl Position {
+    pub fn new(x:f32, y:f32) -> Self {
+        Self {x:x, y:y}
+    }
+}
+
+// TODO: fixed aspect
 impl Render {
     unsafe fn setup_shaders(&mut self) {
         let gl = &mut self.gl;
@@ -29,12 +47,30 @@ impl Render {
             panic!(gl.get_program_info_log(program));
         }
 
+        let pos_loc = gl.get_attrib_location(program, "pos").expect("get_attrib_location failed");
+        gl.vertex_attrib_pointer_f32(pos_loc, 2, glow::FLOAT, false, 0, 0);
+        gl.enable_vertex_attrib_array(pos_loc);
+
         gl.use_program(Some(program));
     }
 
     unsafe fn setup_buffers(&mut self) {
         let vertex_array = self.gl.create_vertex_array().expect("cannot create vertex array");
         self.gl.bind_vertex_array(Some(vertex_array));
+
+        let position_buffer = self.gl.create_buffer().expect("failed");
+        self.gl.bind_buffer(glow::ARRAY_BUFFER, Some(position_buffer));
+            
+        let mut positions = Vec::new();
+        positions.push(Position::new(-0.5, 0.0));
+        positions.push(Position::new(0.5, 0.0));
+        positions.push(Position::new(0.5, 0.5));
+
+        let buffer = std::slice::from_raw_parts(positions.as_ptr() as *const u8, positions.len() * std::mem::size_of::<Position>());
+        let buffer = positions.align_to().1;        
+        log(&format!("{:?}", buffer));
+
+        self.gl.buffer_data_u8_slice(glow::ARRAY_BUFFER, &buffer, glow::DYNAMIC_DRAW);
     }
 
     pub fn new(gl:Context) -> Self {
@@ -51,12 +87,18 @@ impl Render {
     }
     
     pub fn draw(&mut self) {
-        let mut gl = &mut self.gl;
+        let gl = &mut self.gl;
         unsafe {
             gl.viewport(0, 0, self.width, self.height);
             gl.clear_color(0.1, 0.2, 0.3, 1.0);
             gl.clear(glow::COLOR_BUFFER_BIT);
-            gl.draw_arrays(glow::TRIANGLES, 0, 3);
+
+            
+
+
+            let count = 1;
+            
+            gl.draw_arrays(glow::TRIANGLES, 0, 3 * count);
         }
     }
 }

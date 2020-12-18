@@ -17,7 +17,7 @@ features = [
   'Document',
   'Element',
   'HtmlCanvasElement',
-  'Window',
+  'console'
 ]
 
 [dependencies]

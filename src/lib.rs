@@ -4,6 +4,7 @@ use crate::core::*;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use glow::*;
+use web_sys::console;
 
 // TODO: add console out instead of stack exception to improve debugability
 // TODO: add verted buffer to store vertices for triangle drawing
@@ -43,4 +44,12 @@ pub fn start() {
     });
 }
 
+
+pub fn log(str:&str) {
+    let array = js_sys::Array::new();
+    array.push(&str.into());
+    console::log(&array);
+}
+
 //https://github.com/grovesNL/glow/blob/main/examples/hello/src/main.rs
+//https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
