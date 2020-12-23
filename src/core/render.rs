@@ -3,13 +3,13 @@ use wasm_bindgen::prelude::*;
 
 use crate::log;
 
-use super::Vertex;
+use super::{Mesh, Vertex};
 
 pub struct Render {
     pub gl:Context,
     pub width:i32,
     pub height:i32,
-
+    pub meshes:Vec<Mesh>
 }
 
 // TODO: fixed aspect
@@ -76,7 +76,8 @@ impl Render {
         let mut render = Render {
             gl:gl,
             width:1,
-            height:1
+            height:1,
+            meshes:Vec::new()
         };
         unsafe {
             render.setup_buffers();
