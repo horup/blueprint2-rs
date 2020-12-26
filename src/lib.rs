@@ -36,7 +36,23 @@ pub fn start() {
         glow::RenderLoop::from_request_animation_frame()
     );
 
+
     let mut render = Render::new(gl);
+   /* */ unsafe {
+        let mesh = Mesh::new_quad(&mut render.gl);
+        render.meshes.push(mesh);
+
+        let mut mesh = Mesh::new_quad(&mut render.gl);
+
+        for v in &mut mesh.vertices {
+            v.x += 0.5;
+            v.y += 0.5;
+        }
+
+        mesh.update(&mut render.gl);
+        render.meshes.push(mesh);
+    }
+
     render_loop.run(move |running| {
         render.width = canvas.width() as i32;
         render.height = canvas.height() as i32;

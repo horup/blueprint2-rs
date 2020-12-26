@@ -36,17 +36,17 @@ impl Render {
             panic!(gl.get_program_info_log(program));
         }
 
-        let pos_loc = gl.get_attrib_location(program, "pos").expect("get_attrib_location failed");
+      /*  let pos_loc = gl.get_attrib_location(program, "pos").expect("get_attrib_location failed");
         gl.vertex_attrib_pointer_f32(0, 3, glow::FLOAT, false, std::mem::size_of::<Vertex>() as i32, 0);
         gl.enable_vertex_attrib_array(0);
         gl.vertex_attrib_pointer_f32(1, 2, glow::FLOAT, false, std::mem::size_of::<Vertex>() as i32, (std::mem::size_of::<u32>() * 3) as i32);
-        gl.enable_vertex_attrib_array(1);
+        gl.enable_vertex_attrib_array(1);*/
 
         gl.use_program(Some(program));
     }
 
     unsafe fn setup_buffers(&mut self) {
-        let vertex_array = self.gl.create_vertex_array().expect("cannot create vertex array");
+        /*let vertex_array = self.gl.create_vertex_array().expect("cannot create vertex array");
         self.gl.bind_vertex_array(Some(vertex_array));
 
         let position_buffer = self.gl.create_buffer().expect("failed");
@@ -69,7 +69,7 @@ impl Render {
         let buffer = vertices.align_to().1;        
         log(&format!("{:?}", buffer));
 
-        self.gl.buffer_data_u8_slice(glow::ARRAY_BUFFER, &buffer, glow::DYNAMIC_DRAW);
+        self.gl.buffer_data_u8_slice(glow::ARRAY_BUFFER, &buffer, glow::DYNAMIC_DRAW);*/
     }
 
     pub fn new(gl:Context) -> Self {
@@ -95,10 +95,13 @@ impl Render {
 
             
 
+            for mesh in &self.meshes {
+                mesh.draw(gl);
+            }
 
             let count = 1;
             
-            gl.draw_arrays(glow::TRIANGLES, 0, 6 * count);
+           // gl.draw_arrays(glow::TRIANGLES, 0, 6 * count);
         }
     }
 }
