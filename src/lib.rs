@@ -38,7 +38,7 @@ pub fn start() {
 
 
     let mut render = Render::new(gl);
-   /* */ unsafe {
+   /* unsafe {
         let mesh = Mesh::new_quad(&mut render.gl);
         render.meshes.push(mesh);
 
@@ -51,7 +51,9 @@ pub fn start() {
 
         mesh.update(&mut render.gl);
         render.meshes.push(mesh);
-    }
+    }*/
+
+    render.insert_quad();
 
     render_loop.run(move |running| {
         render.width = canvas.width() as i32;

@@ -1,3 +1,4 @@
+use generational_arena::Arena;
 use glow::*;
 use wasm_bindgen::prelude::*;
 
@@ -9,7 +10,7 @@ pub struct Render {
     pub gl:Context,
     pub width:i32,
     pub height:i32,
-    pub meshes:Vec<Mesh>
+    meshes:Arena<Mesh>
 }
 
 // TODO: fixed aspect
@@ -77,13 +78,32 @@ impl Render {
             gl:gl,
             width:1,
             height:1,
-            meshes:Vec::new()
+            meshes:Arena::new()
         };
         unsafe {
             render.setup_buffers();
             render.setup_shaders();
         }
         return render;
+    }
+
+    pub fn insert_quad(&mut self) {
+        unsafe {
+            let mut vertices = Vec::new();
+            // lower right triangle
+            vertices.push(Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0)); //1
+            vertices.push(Vertex::new(0.5, -0.5, 0.0, 1.0, 0.0)); //2
+            vertices.push(Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0)); //3
+
+            // upper left triangle
+            vertices.push(Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0)); //1
+            vertices.push(Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0)); //3
+            vertices.push(Vertex::new(-0.5, 0.5, 0.0, 0.0, 1.0)); //4
+
+            
+            let mesh = Mesh::new(&vertices, &mut self.gl);
+            self.meshes.insert(mesh);
+        }
     }
     
     pub fn draw(&mut self) {
@@ -95,7 +115,7 @@ impl Render {
 
             
 
-            for mesh in &self.meshes {
+            for (_, mesh) in &self.meshes {
                 mesh.draw(gl);
             }
 
