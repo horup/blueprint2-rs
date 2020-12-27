@@ -12,7 +12,6 @@ pub struct Mesh {
 }
 
 impl Mesh {
-
     pub unsafe fn new_quad(gl:&mut Context) -> Self {
         let mut vertices = Vec::new();
         // lower right triangle
@@ -26,13 +25,6 @@ impl Mesh {
         vertices.push(Vertex::new(-0.5, 0.5, 0.0, 0.0, 1.0)); //4
 
         return Self::new(&vertices, gl);
-    }
-
-    pub fn draw(&self, gl:&mut Context) {
-        unsafe {
-            gl.bind_vertex_array(Some(self.vertex_array_object));
-            gl.draw_arrays(glow::TRIANGLES, 0, self.vertices.len() as i32);
-        }
     }
 
     pub fn new(vertices:&[Vertex], gl:&mut Context) -> Self {

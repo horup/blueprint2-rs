@@ -1,5 +1,6 @@
 use nalgebra::{Vector2, Vector3};
-use super::Animation;
+use crate::Animation;
+
 use super::GameWorld;
 
 

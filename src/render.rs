@@ -17,8 +17,8 @@ pub struct Render {
 impl Render {
     unsafe fn setup_shaders(&mut self) {
         let gl = &mut self.gl;
-        let vertex_shader_source = include_str!("./shaders/default.vert");
-        let fragment_shader_source = include_str!("./shaders/default.frag");
+        let vertex_shader_source = include_str!("../shaders/default.vert");
+        let fragment_shader_source = include_str!("../shaders/default.frag");
 
         let program = gl.create_program().expect("Cannot create program");
     
@@ -124,7 +124,8 @@ impl Render {
             
 
             for (_, mesh) in &self.meshes {
-                mesh.draw(gl);
+                gl.bind_vertex_array(Some(mesh.vertex_array_object));
+                gl.draw_arrays(glow::TRIANGLES, 0, mesh.vertices.len() as i32);
             }
 
             let count = 1;
