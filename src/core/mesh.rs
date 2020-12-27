@@ -59,7 +59,7 @@ impl Mesh {
         }
     }
 
-    pub fn update(&mut self, gl:&mut Context) {
+    pub fn update(&self, gl:&Context) {
         unsafe {
             let buffer = std::slice::from_raw_parts(self.vertices.as_ptr() as *const u8, self.vertices.len() * std::mem::size_of::<Vertex>());
             let buffer = buffer.align_to().1;        

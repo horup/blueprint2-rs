@@ -1,4 +1,4 @@
-use generational_arena::Arena;
+use generational_arena::{Arena, Index};
 use glow::*;
 use wasm_bindgen::prelude::*;
 
@@ -87,7 +87,7 @@ impl Render {
         return render;
     }
 
-    pub fn insert_quad(&mut self) {
+    pub fn insert_quad(&mut self) -> Index {
         unsafe {
             let mut vertices = Vec::new();
             // lower right triangle
@@ -102,8 +102,16 @@ impl Render {
 
             
             let mesh = Mesh::new(&vertices, &mut self.gl);
-            self.meshes.insert(mesh);
+            self.meshes.insert(mesh)
         }
+    }
+
+    pub fn get_mesh(&self, index:Index) -> Option<&Mesh> {
+        self.meshes.get(index)
+    }
+
+    pub fn get_mesh_mut(&mut self, index:Index) -> Option<&mut Mesh> {
+        self.meshes.get_mut(index)
     }
     
     pub fn draw(&mut self) {

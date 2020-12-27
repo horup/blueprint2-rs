@@ -53,7 +53,16 @@ pub fn start() {
         render.meshes.push(mesh);
     }*/
 
-    render.insert_quad();
+    let q1 = render.insert_quad();
+    let q2 = render.insert_quad();
+
+    let m = render.get_mesh_mut(q2).unwrap();
+    for v in &mut m.vertices {
+        v.x += 0.5;
+        v.y += 0.5;
+    }
+    let m = render.get_mesh(q2).unwrap();
+    m.update(&render.gl);
 
     render_loop.run(move |running| {
         render.width = canvas.width() as i32;
