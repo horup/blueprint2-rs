@@ -13,8 +13,8 @@ pub use mesh::*;
 mod world;
 pub use world::*;
 
-mod context;
-pub use context::*;
+mod engine;
+pub use engine::*;
 
 mod thing;
 pub use thing::*;
@@ -27,3 +27,6 @@ pub use wasm_main::*;
 
 mod update;
 pub use update::*;
+
+mod draw;
+pub use draw::*;

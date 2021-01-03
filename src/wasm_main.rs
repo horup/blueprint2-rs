@@ -3,7 +3,7 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use glow::*;
 
-use crate::{Context, Event, Render, World, update};
+use crate::{Engine, Event, Render, World, draw, update};
 
 
 // TODO: add console out instead of stack exception to improve debugability
@@ -37,7 +37,17 @@ pub fn start() {
     );
 
 
-    let mut render = Render::new(gl);
+    let mut context = Engine::new(gl);
+
+    update(&mut context, Event::Initialize);
+    render_loop.run(move |running| { 
+        context.width = canvas.width() as i32;
+        context.height = canvas.height() as i32;
+        context.update(Event::Draw(1.0));
+    });
+
+
+ /*   let mut render = Render::new(gl);
   
     let q1 = render.insert_quad();
     let q2 = render.insert_quad();
@@ -67,7 +77,7 @@ pub fn start() {
         });
 
         render.draw();
-    });
+    });*/
 }
 
 
