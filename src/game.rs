@@ -1,7 +1,9 @@
-pub fn update() {
+use crate::{Context, log};
 
+pub fn update(context:Context) {
+    log("Update");
 }
 
-pub fn setup(context:&mut Context) {
-    
+pub fn setup(context:Context) {
+    log("Setup");
 }

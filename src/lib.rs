@@ -21,3 +21,5 @@ pub use log::*;
 
 mod wasm_main;
 pub use wasm_main::*;
+
+pub mod game;
