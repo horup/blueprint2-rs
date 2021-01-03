@@ -1,3 +1,6 @@
+mod event;
+pub use event::*;
+
 mod render;
 pub use render::*;
 
@@ -22,4 +25,5 @@ pub use log::*;
 mod wasm_main;
 pub use wasm_main::*;
 
-pub mod game;
+mod update;
+pub use update::*;

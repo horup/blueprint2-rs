@@ -1,5 +1,6 @@
-use crate::World;
+use crate::{Event, World};
 
 pub struct Context<'a> {
-    pub world:&'a mut World
+    pub world:&'a mut World,
+    pub event:Event
 }
