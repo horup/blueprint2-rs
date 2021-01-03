@@ -1,7 +1,8 @@
-use crate::{Engine, World};
+use crate::{Engine, World, log};
 use glow::*;
 pub fn setup_shaders(context:&mut Engine) {
     unsafe {
+
         let gl = &mut context.gl;
         let vertex_shader_source = include_str!("../shaders/default.vert");
         let fragment_shader_source = include_str!("../shaders/default.frag");
@@ -42,5 +43,11 @@ pub fn draw(context:&mut Engine) {
         gl.viewport(0, 0, width, height);
         gl.clear_color(0.1, 0.2, 0.3, 1.0);
         gl.clear(glow::COLOR_BUFFER_BIT);
+
+        for (_, mesh) in &context.meshes {
+            log("test");
+            gl.bind_vertex_array(Some(mesh.vertex_array_object));
+            gl.draw_arrays(glow::TRIANGLES, 0, mesh.vertices.len() as i32);
+        }
     }
 }
