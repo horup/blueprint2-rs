@@ -1,6 +1,6 @@
 use generational_arena::Arena;
 
-use crate::{Event, Mesh, World, draw, log, setup_shaders};
+use crate::{Event, Mesh, World, draw, log};
 
 pub struct Engine {
     pub world:World,
@@ -31,12 +31,12 @@ impl Engine {
     pub fn update(&mut self, e:Event) {
         match e {
             Event::Initialize => {
-                setup_shaders(self);
+                self.setup_shaders();
                 self.setup();
             }
             Event::Update(_) => {}
             Event::Draw(_) => {
-                draw(self);
+                self.draw();
             }
         }
     }
