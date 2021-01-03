@@ -1,9 +1,6 @@
 mod event;
 pub use event::*;
 
-mod render;
-pub use render::*;
-
 mod vertex;
 pub use vertex::*;
 
@@ -24,6 +21,3 @@ pub use log::*;
 
 mod wasm_main;
 pub use wasm_main::*;
-
-mod rendering;
-pub use rendering::*;
