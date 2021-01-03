@@ -1,6 +1,6 @@
 use generational_arena::Arena;
 
-use crate::{Event, Mesh, World, draw, log};
+use crate::{Event, Mesh, World, log};
 
 pub struct Engine {
     pub world:World,

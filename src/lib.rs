@@ -25,5 +25,5 @@ pub use log::*;
 mod wasm_main;
 pub use wasm_main::*;
 
-mod draw;
-pub use draw::*;
+mod rendering;
+pub use rendering::*;
