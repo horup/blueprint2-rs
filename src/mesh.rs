@@ -12,17 +12,19 @@ pub struct Mesh {
 }
 
 impl Mesh {
-    pub unsafe fn new_quad(gl:&mut Context) -> Self {
+    pub unsafe fn new_quads(gl:&mut Context, count:u32) -> Self {
         let mut vertices = Vec::new();
-        // lower right triangle
-        vertices.push(Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0)); //1
-        vertices.push(Vertex::new(0.5, -0.5, 0.0, 1.0, 0.0)); //2
-        vertices.push(Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0)); //3
+        for i in 0..count {
+            // lower right triangle
+            vertices.push(Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0)); //1
+            vertices.push(Vertex::new(0.5, -0.5, 0.0, 1.0, 0.0)); //2
+            vertices.push(Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0)); //3
 
-        // upper left triangle
-        vertices.push(Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0)); //1
-        vertices.push(Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0)); //3
-        vertices.push(Vertex::new(-0.5, 0.5, 0.0, 0.0, 1.0)); //4
+            // upper left triangle
+            vertices.push(Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0)); //1
+            vertices.push(Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0)); //3
+            vertices.push(Vertex::new(-0.5, 0.5, 0.0, 0.0, 1.0)); //4
+        }
 
         return Self::new(&vertices, gl);
     }

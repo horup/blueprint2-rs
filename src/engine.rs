@@ -23,7 +23,7 @@ impl Engine {
 
     pub fn setup(&mut self) {
         unsafe {
-            let mesh = Mesh::new_quad(&mut self.gl);
+            let mesh = Mesh::new_quads(&mut self.gl, 1024);
             self.meshes.insert(mesh);
         }
     }
