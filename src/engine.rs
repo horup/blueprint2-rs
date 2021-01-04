@@ -1,9 +1,10 @@
 use generational_arena::Arena;
-use crate::{Event, Mesh, World, log};
+use crate::{Event, Game, Mesh, World, log};
 use glow::*;
 
 pub struct Engine {
     pub world:World,
+    pub game:Game,
     pub gl:glow::Context,
     pub width:i32,
     pub height:i32,
@@ -14,6 +15,7 @@ impl Engine {
     pub fn new(gl:glow::Context) -> Self {
         Self {
             world:World::new(),
+            game:Game::default(),
             gl,
             width:0,
             height:0,
@@ -21,7 +23,7 @@ impl Engine {
         }
     }
 
-    pub fn setup(&mut self) {
+    pub fn setup_sprites(&mut self) {
         unsafe {
             let mesh = Mesh::new_quads(&mut self.gl, 1024);
             self.meshes.insert(mesh);
@@ -52,12 +54,6 @@ impl Engine {
                 panic!(gl.get_program_info_log(program));
             }
     
-          /*  let pos_loc = gl.get_attrib_location(program, "pos").expect("get_attrib_location failed");
-            gl.vertex_attrib_pointer_f32(0, 3, glow::FLOAT, false, std::mem::size_of::<Vertex>() as i32, 0);
-            gl.enable_vertex_attrib_array(0);
-            gl.vertex_attrib_pointer_f32(1, 2, glow::FLOAT, false, std::mem::size_of::<Vertex>() as i32, (std::mem::size_of::<u32>() * 3) as i32);
-            gl.enable_vertex_attrib_array(1);*/
-    
             gl.use_program(Some(program));
         }
     }
@@ -82,7 +78,7 @@ impl Engine {
         match e {
             Event::Initialize => {
                 self.setup_shaders();
-                self.setup();
+                self.setup_sprites();
             }
             Event::Update(_) => {}
             Event::Draw(_) => {
