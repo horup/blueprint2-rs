@@ -4,7 +4,6 @@ use glow::*;
 
 pub struct Engine {
     pub world:World,
-    pub game:Game,
     pub gl:glow::Context,
     pub width:i32,
     pub height:i32,
@@ -15,7 +14,6 @@ impl Engine {
     pub fn new(gl:glow::Context) -> Self {
         Self {
             world:World::new(),
-            game:Game::default(),
             gl,
             width:0,
             height:0,
@@ -28,6 +26,10 @@ impl Engine {
             let mesh = Mesh::new_quads(&mut self.gl, 1024);
             self.meshes.insert(mesh);
         }
+    }
+
+    pub fn log(&self, s:&str) {
+        log(s);
     }
 
     pub fn setup_shaders(&mut self) {
@@ -57,19 +59,26 @@ impl Engine {
             gl.use_program(Some(program));
         }
     }
+
+    pub fn draw_sprites(&mut self) {
+        for (_, thing) in self.world.things.iter_mut() {
+            log("test"); 
+        }
+    }
     
     pub fn draw(&mut self) {
-        let gl = &self.gl;
         let width = self.width;
         let height = self.height;
+
+        
     
         unsafe {
-            gl.viewport(0, 0, width, height);
-            gl.clear_color(0.1, 0.2, 0.3, 1.0);
-            gl.clear(glow::COLOR_BUFFER_BIT);
-    
+            self.gl.viewport(0, 0, width, height);
+            self.gl.clear_color(0.1, 0.2, 0.3, 1.0);
+            self.gl.clear(glow::COLOR_BUFFER_BIT);
+            self.draw_sprites();
             for (_, mesh) in &self.meshes {
-                mesh.draw(&gl);
+                mesh.draw(&self.gl);
             }
         }
     }
@@ -79,6 +88,7 @@ impl Engine {
             Event::Initialize => {
                 self.setup_shaders();
                 self.setup_sprites();
+                Game::update(self, e);
             }
             Event::Update(_) => {}
             Event::Draw(_) => {

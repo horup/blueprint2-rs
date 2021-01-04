@@ -1,9 +1,9 @@
-use generational_arena::Arena;
+use generational_arena::{Arena, IterMut};
 
 use crate::Thing;
 
 pub struct World {
-    things:Arena<Thing>
+    pub things:Arena<Thing>
 }
 
 
@@ -17,7 +17,6 @@ impl World {
     pub fn new_thing(&mut self) -> &mut Thing {
         let id = self.things.insert(Thing::default());
         let mut thing = self.things.get_mut(id).unwrap();
-        thing.id = Some(id);
         thing
     }
 }
