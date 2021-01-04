@@ -83,12 +83,12 @@ impl Engine {
         }
     }
 
-    pub fn update(&mut self, e:Event) {
+    pub fn update(&mut self, e:Event, game:&mut Game) {
         match e {
             Event::Initialize => {
                 self.setup_shaders();
                 self.setup_sprites();
-                Game::update(self, e);
+                game.update(self, e);
             }
             Event::Update(_) => {}
             Event::Draw(_) => {

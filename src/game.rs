@@ -1,7 +1,11 @@
-pub mod Game {
-    use crate::{Engine, Event, Thing};
+use crate::{Engine, Event, Thing};
+pub struct Game {
 
-    pub fn update(engine:&mut Engine, event:Event) {
+}
+
+impl Game {
+
+    pub fn update(&mut self, engine:&mut Engine, event:Event) {
         match event {
             Event::Initialize => {
                 engine.log("Game initialized");
@@ -9,6 +13,12 @@ pub mod Game {
             }
             Event::Update(_) => {}
             Event::Draw(_) => {}
+        }
+    }
+
+    pub fn new() -> Self {
+        Self {
+            
         }
     }
 }
