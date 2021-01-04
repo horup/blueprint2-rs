@@ -61,4 +61,11 @@ impl Mesh {
             gl.buffer_data_u8_slice(glow::ARRAY_BUFFER, &buffer, glow::DYNAMIC_DRAW);
         }
     }
+
+    pub fn draw(&self, gl:&Context) {
+        unsafe {
+            gl.bind_vertex_array(Some(self.vertex_array_object));
+            gl.draw_arrays(glow::TRIANGLES, 0, self.vertices.len() as i32);
+        }
+    }
 }

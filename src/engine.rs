@@ -73,9 +73,7 @@ impl Engine {
             gl.clear(glow::COLOR_BUFFER_BIT);
     
             for (_, mesh) in &self.meshes {
-                log("test");
-                gl.bind_vertex_array(Some(mesh.vertex_array_object));
-                gl.draw_arrays(glow::TRIANGLES, 0, mesh.vertices.len() as i32);
+                mesh.draw(&gl);
             }
         }
     }
