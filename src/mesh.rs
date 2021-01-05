@@ -12,7 +12,7 @@ pub struct Mesh {
 }
 
 impl Mesh {
-    pub unsafe fn new_quads(gl:&mut Context, count:u32) -> Self {
+    pub unsafe fn new_quads(gl:&mut Context, count:usize) -> Self {
         let mut vertices = Vec::new();
         for i in 0..count {
             // lower right triangle
@@ -63,5 +63,15 @@ impl Mesh {
     pub unsafe fn draw(&self, gl:&Context) {
         gl.bind_vertex_array(Some(self.vertex_array_object));
         gl.draw_arrays(glow::TRIANGLES, 0, self.vertices.len() as i32);
+    }
+
+    /// Draws a subset of the mesh where `count` is the number of vertices to draw
+    pub unsafe fn draw_subset(&self, gl:&Context, count:usize) {
+        gl.bind_vertex_array(Some(self.vertex_array_object));
+        let mut count = count;
+        if count < self.vertices.len() {
+            count = self.vertices.len();
+        }
+        gl.draw_arrays(glow::TRIANGLES, 0, count as i32);
     }
 }
