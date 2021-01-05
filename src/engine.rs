@@ -31,7 +31,7 @@ impl Engine {
     pub fn log(&self, s:&str) {
         log(s);
     }
-
+    
     pub fn setup_shaders(&mut self) {
         unsafe {
     

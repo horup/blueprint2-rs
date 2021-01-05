@@ -1,5 +1,6 @@
 use glow::Context;
 use crate::Mesh;
+use nalgebra::Vector3;
 
 
 /// An object which maintains a single mesh consisting of one or more sprites
@@ -37,7 +38,26 @@ impl SpriteMesh {
     }
 
     /// Pushes a sprite to the mesh, which is drawn by calling `draw`
-    pub fn push_sprite(&mut self) {
-        self.count += 1;
+    pub fn push_sprite(&mut self, pos:Vector3<f32>) {
+        /*
+          for i in 0..count {
+            // lower right triangle
+            vertices.push(Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0)); //1
+            vertices.push(Vertex::new(0.5, -0.5, 0.0, 1.0, 0.0)); //2
+            vertices.push(Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0)); //3
+
+            // upper left triangle
+            vertices.push(Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0)); //1
+            vertices.push(Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0)); //3
+            vertices.push(Vertex::new(-0.5, 0.5, 0.0, 0.0, 1.0)); //4
+        }
+        */
+
+        if self.count < self.max_sprites {
+            let mesh = &mut self.mesh;
+            let i = self.count * 6;
+
+            self.count += 1;
+        }
     }
 }
