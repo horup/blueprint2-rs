@@ -1,5 +1,9 @@
+use std::collections::HashMap;
+
 use generational_arena::Arena;
-use crate::{Event, Game, Mesh, World, log};
+use itertools::Itertools;
+use nalgebra::Vector3;
+use crate::{Event, Game, Mesh, SpriteMesh, World, log};
 use glow::*;
 
 pub struct Engine {
@@ -7,7 +11,8 @@ pub struct Engine {
     pub gl:glow::Context,
     pub width:i32,
     pub height:i32,
-    pub meshes:Arena<Mesh>
+    pub meshes:Arena<Mesh>,
+    sprite_meshes:HashMap<crate::Texture, SpriteMesh>
 }
 
 impl Engine {
@@ -17,14 +22,8 @@ impl Engine {
             gl,
             width:0,
             height:0,
-            meshes:Arena::new()
-        }
-    }
-
-    pub fn setup_sprites(&mut self) {
-        unsafe {
-            let mesh = Mesh::new_quads(&mut self.gl, 1024);
-            self.meshes.insert(mesh);
+            meshes:Arena::new(),
+            sprite_meshes:HashMap::new()
         }
     }
 
@@ -60,17 +59,38 @@ impl Engine {
         }
     }
 
-    pub fn draw_sprites(&mut self) {
-        for (_, thing) in self.world.things.iter_mut() {
-            log("test"); 
+    pub unsafe fn draw_sprites(&mut self) {
+        let textures_in_use= self.world.things.iter().map(|(_, thing)| thing.sprite.texture).unique().collect_vec();
+        
+        // ensure a sprite_mesh exist for all textures in use
+        for texture in &textures_in_use {
+            if self.sprite_meshes.contains_key(texture) == false {
+                self.sprite_meshes.insert(*texture, SpriteMesh::new(&self.gl, 1024));
+            }
+        }
+
+        // clear all sprite meshes to 0 sprites
+        for sprite_mesh in self.sprite_meshes.values_mut() {
+            sprite_mesh.clear();
+        }
+
+        // populate the sprite meshes with sprite data
+        for (_, thing) in self.world.things.iter() {
+            if let Some(sprite_mesh) = self.sprite_meshes.get_mut(&thing.sprite.texture) {
+                sprite_mesh.push_sprite(thing.pos);
+            }
+        }
+
+        // draw the sprite meshes one by one
+        for sprite_mesh in self.sprite_meshes.values_mut() {
+            sprite_mesh.update(&self.gl);
+            sprite_mesh.draw(&self.gl);
         }
     }
     
     pub fn draw(&mut self) {
         let width = self.width;
         let height = self.height;
-
-        
     
         unsafe {
             self.gl.viewport(0, 0, width, height);
@@ -87,7 +107,6 @@ impl Engine {
         match e {
             Event::Initialize => {
                 self.setup_shaders();
-                self.setup_sprites();
                 game.update(self, e);
             }
             Event::Update(_) => {}

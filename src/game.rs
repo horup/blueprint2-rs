@@ -10,6 +10,9 @@ impl Game {
             Event::Initialize => {
                 engine.log("Game initialized");
                 let t1 = engine.world.new_thing();
+                let t2 = engine.world.new_thing();
+                t2.pos.x = 0.5;
+                t2.pos.y = 0.5;
             }
             Event::Update(_) => {}
             Event::Draw(_) => {}

@@ -18,7 +18,7 @@ impl SpriteMesh {
 
     /// Instantiate a new SpriteMesh object with `max_sprites` being the maximum number of quads 
     /// in the mesh.
-    pub unsafe fn new(gl:&mut Context, max_sprites:usize) -> Self {
+    pub unsafe fn new(gl:&Context, max_sprites:usize) -> Self {
         
         let mesh = Mesh::new_quads(gl, max_sprites);
 
@@ -29,8 +29,8 @@ impl SpriteMesh {
         }
     }
 
-    pub unsafe fn draw(&self, gl:&mut Context) {
-
+    pub unsafe fn draw(&self, gl:&Context) {
+        self.mesh.draw_subset(gl, self.count * 6);
     }
 
     pub fn clear(&mut self) {

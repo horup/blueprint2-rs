@@ -12,7 +12,7 @@ pub struct Mesh {
 }
 
 impl Mesh {
-    pub unsafe fn new_quads(gl:&mut Context, count:usize) -> Self {
+    pub unsafe fn new_quads(gl:&Context, count:usize) -> Self {
         let mut vertices = Vec::new();
         for i in 0..count {
             // lower right triangle
@@ -29,7 +29,7 @@ impl Mesh {
         return Self::new(&vertices, gl);
     }
 
-    pub unsafe fn new(vertices:&[Vertex], gl:&mut Context) -> Self {
+    pub unsafe fn new(vertices:&[Vertex], gl:&Context) -> Self {
         let vertex_array_object = gl.create_vertex_array().expect("cannot create vertex array");
         gl.bind_vertex_array(Some(vertex_array_object));
         let vertex_buffer_object = gl.create_buffer().expect("failed");
@@ -81,7 +81,7 @@ impl Mesh {
     pub unsafe fn draw_subset(&self, gl:&Context, count:usize) {
         gl.bind_vertex_array(Some(self.vertex_array_object));
         let mut count = count;
-        if count < self.vertices.len() {
+        if count > self.vertices.len() {
             count = self.vertices.len();
         }
         gl.draw_arrays(glow::TRIANGLES, 0, count as i32);

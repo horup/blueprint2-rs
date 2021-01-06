@@ -14,6 +14,8 @@ mod sprite;
 pub use sprite::*;
 mod spritemesh;
 pub use spritemesh::*;
+mod texture;
+pub use texture::*;
 mod game;
 pub use game::*;
 
