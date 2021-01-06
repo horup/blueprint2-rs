@@ -1,5 +1,5 @@
 use glow::Context;
-use crate::Mesh;
+use crate::{Mesh, Vertex};
 use nalgebra::Vector3;
 
 
@@ -7,7 +7,7 @@ use nalgebra::Vector3;
 pub struct SpriteMesh {
 
     /// The mesh which holds the raw vertex data
-    pub mesh:Mesh,
+    mesh:Mesh,
     /// Max number of sprites, sprites exceeding this number will not be drawn
     pub max_sprites:usize,
     /// Number of sprites to draw
@@ -39,25 +39,32 @@ impl SpriteMesh {
 
     /// Pushes a sprite to the mesh, which is drawn by calling `draw`
     pub fn push_sprite(&mut self, pos:Vector3<f32>) {
-        /*
-          for i in 0..count {
-            // lower right triangle
-            vertices.push(Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0)); //1
-            vertices.push(Vertex::new(0.5, -0.5, 0.0, 1.0, 0.0)); //2
-            vertices.push(Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0)); //3
-
-            // upper left triangle
-            vertices.push(Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0)); //1
-            vertices.push(Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0)); //3
-            vertices.push(Vertex::new(-0.5, 0.5, 0.0, 0.0, 1.0)); //4
-        }
-        */
-
         if self.count < self.max_sprites {
             let mesh = &mut self.mesh;
             let i = self.count * 6;
+            let p = pos;
+            let mut vs = [
+                Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0),
+                Vertex::new(0.5, -0.5, 0.0, 1.0, 0.0),
+                Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0),
+                Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0),
+                Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0),
+                Vertex::new(-0.5, 0.5, 0.0, 0.0, 1.0)];
 
+            // translate
+            for v in &mut vs {
+                v.x += p.x;
+                v.y += p.y;
+                v.z += p.y;
+            }
+
+            mesh.copy_from(&vs, self.count * 6);
             self.count += 1;
         }
+    }
+
+    /// Updates the SpriteMesh with the contained vertex data.
+    pub unsafe fn update(&mut self, gl:&Context) {
+        self.mesh.update(gl);
     }
 }

@@ -65,6 +65,18 @@ impl Mesh {
         gl.draw_arrays(glow::TRIANGLES, 0, self.vertices.len() as i32);
     }
 
+    /// Copies the vertices storied in `vertices` into the mesh at `dest_index`
+    /// Note: does not grow the underlying buffer, vertices outside the buffer will be ignored!
+    pub fn copy_from(&mut self, vertices:&[Vertex], dest_index:usize) {
+        let mut i = dest_index;
+        for source in vertices {
+            if let Some(target) = self.vertices.get_mut(i) {
+                *target = *source;
+            } 
+            i += 1;
+        }
+    }
+
     /// Draws a subset of the mesh where `count` is the number of vertices to draw
     pub unsafe fn draw_subset(&self, gl:&Context, count:usize) {
         gl.bind_vertex_array(Some(self.vertex_array_object));
