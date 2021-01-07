@@ -109,7 +109,9 @@ impl Engine {
                 self.setup_shaders();
                 game.update(self, e);
             }
-            Event::Update(_) => {}
+            Event::Update(_) => {
+                game.update(self, e);
+            }
             Event::Draw(_) => {
                 self.draw();
             }

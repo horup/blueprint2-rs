@@ -1,4 +1,4 @@
-use crate::{Engine, Event, Thing};
+use crate::{Engine, Event, Thing, log};
 pub struct Game {
 
 }
@@ -14,7 +14,13 @@ impl Game {
                 t2.pos.x = 0.5;
                 t2.pos.y = 0.5;
             }
-            Event::Update(_) => {}
+            Event::Update(_) => {
+                for (_, t) in engine.world.things.iter_mut() {
+                    t.pos.x += 0.01;
+                }
+
+                log("helloworld");
+            }
             Event::Draw(_) => {}
         }
     }
