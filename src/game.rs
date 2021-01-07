@@ -9,17 +9,17 @@ impl Game {
         match event {
             Event::Initialize => {
                 engine.log("Game initialized");
-                let t1 = engine.world.new_thing();
-                let t2 = engine.world.new_thing();
+                let t1 = engine.current.new_thing();
+                let t2 = engine.current.new_thing();
                 t2.pos.x = 0.5;
                 t2.pos.y = 0.5;
             }
-            Event::Update(_) => {
-                for (_, t) in engine.world.things.iter_mut() {
-                    t.pos.x += 0.01;
+            Event::Update(time, dt) => {
+                for (_, t) in engine.current.things.iter_mut() {
+                    t.pos.x += 0.1 * dt as f32;
                 }
             }
-            Event::Draw(_) => {
+            Event::BeforeRender(_,_,_) => {
                
             }
         }

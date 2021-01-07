@@ -3,30 +3,50 @@ use std::collections::HashMap;
 use generational_arena::Arena;
 use itertools::Itertools;
 use nalgebra::Vector3;
-use crate::{Event, Game, Mesh, SpriteMesh, Timer, World, log};
+use crate::{Event, Game, Mesh, SpriteMesh, World, log};
 use glow::*;
 
 pub struct Engine {
-    pub world:World,
-    pub gl:glow::Context,
+    pub current:World,
+    pub previous:World,
+    gl:glow::Context,
     pub width:i32,
     pub height:i32,
-    pub meshes:Arena<Mesh>,
-    timer:Timer,
-    sprite_meshes:HashMap<crate::Texture, SpriteMesh>
+    meshes:Arena<Mesh>,
+    tick_rate:u32,
+    sprite_meshes:HashMap<crate::Texture, SpriteMesh>,
+    initialized:bool,
+    current_time:f64,
+    accumulator:f64,
+    t:f64
 }
 
 impl Engine {
     pub fn new(gl:glow::Context) -> Self {
         Self {
-            world:World::new(),
+            tick_rate:20,
+            current:World::new(),
+            previous:World::new(),
             gl,
             width:0,
             height:0,
             meshes:Arena::new(),
-            timer:Timer::default(),
-            sprite_meshes:HashMap::new()
+            sprite_meshes:HashMap::new(),
+            initialized:false,
+            accumulator:0.0,
+            current_time:Self::now_as_secs(),
+            t:0.0
         }
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    pub fn now_as_secs() -> f64 {
+        return js_sys::Date::now() / 1000.0;
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn now_as_secs() -> f64 {
+        return Instant::now().elapsed().as_secs_f64();
     }
 
     pub fn log(&self, s:&str) {
@@ -62,7 +82,7 @@ impl Engine {
     }
 
     pub unsafe fn draw_sprites(&mut self) {
-        let textures_in_use= self.world.things.iter().map(|(_, thing)| thing.sprite.texture).unique().collect_vec();
+        let textures_in_use= self.current.things.iter().map(|(_, thing)| thing.sprite.texture).unique().collect_vec();
         
         // ensure a sprite_mesh exist for all textures in use
         for texture in &textures_in_use {
@@ -77,7 +97,7 @@ impl Engine {
         }
 
         // populate the sprite meshes with sprite data
-        for (_, thing) in self.world.things.iter() {
+        for (_, thing) in self.current.things.iter() {
             if let Some(sprite_mesh) = self.sprite_meshes.get_mut(&thing.sprite.texture) {
                 sprite_mesh.push_sprite(thing.pos);
             }
@@ -90,7 +110,7 @@ impl Engine {
         }
     }
     
-    pub fn draw(&mut self) {
+    pub fn draw(&mut self, alpha:f64) {
         let width = self.width;
         let height = self.height;
     
@@ -105,21 +125,36 @@ impl Engine {
         }
     }
 
-    pub fn on_event(&mut self, e:Event, game:&mut Game) {
-        match e {
-            Event::Initialize => {
-                self.setup_shaders();
-                game.on_event(self, e);
-            }
-            Event::Update(_) => {
-                game.on_event(self, e);
-            }
-            Event::Draw(_) => {
-                game.on_event(self, e);
-                self.draw();
-                self.timer.on_draw();
-                log(&format!("{}", self.timer.draw_delta_avg()));
-            }
+    pub fn tick(&mut self, game:&mut Game) {
+        if self.initialized == false {
+            self.initialized = true;
+            self.setup_shaders();
+            game.on_event(self, Event::Initialize);
+            self.tick(game);
+            return;
         }
+
+        let new_time = Self::now_as_secs();
+        let mut frame_time = new_time - self.current_time;
+        let max_time = 0.25;
+        if frame_time > max_time {
+            frame_time = max_time;
+        }
+        self.current_time = new_time;
+
+        let frame_time = frame_time;
+        self.accumulator += frame_time;
+        let dt = 1.0 / self.tick_rate as f64;
+        while self.accumulator >= dt {
+            self.previous = self.current.clone();
+            game.on_event(self, Event::Update(self.t, dt));
+            self.t += dt;
+            self.accumulator -= dt;
+        }
+
+        let alpha = self.accumulator / dt;
+        
+        game.on_event(self, Event::BeforeRender(self.current_time, frame_time, alpha));
+        self.draw(alpha);
     }
 }

@@ -1,5 +1,8 @@
 pub enum Event {
     Initialize,
-    Update(f32),
-    Draw(f32)
+    /// `time`, `delta_time`
+    Update(f64, f64),
+
+    /// `time`, `delta_time`, `alpha`
+    BeforeRender(f64, f64, f64)
 }

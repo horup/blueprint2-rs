@@ -18,8 +18,6 @@ mod texture;
 pub use texture::*;
 mod game;
 pub use game::*;
-mod timer;
-pub use timer::*;
 
 mod log;
 pub use log::*;

@@ -2,10 +2,10 @@ use generational_arena::{Arena, IterMut};
 
 use crate::Thing;
 
+#[derive(Clone)]
 pub struct World {
     pub things:Arena<Thing>
 }
-
 
 impl World {
     pub fn new() -> Self {
