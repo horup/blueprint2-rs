@@ -5,7 +5,7 @@ pub struct Game {
 
 impl Game {
 
-    pub fn update(&mut self, engine:&mut Engine, event:Event) {
+    pub fn on_event(&mut self, engine:&mut Engine, event:Event) {
         match event {
             Event::Initialize => {
                 engine.log("Game initialized");
@@ -18,10 +18,10 @@ impl Game {
                 for (_, t) in engine.world.things.iter_mut() {
                     t.pos.x += 0.01;
                 }
-
-                log("helloworld");
             }
-            Event::Draw(_) => {}
+            Event::Draw(_) => {
+               
+            }
         }
     }
 

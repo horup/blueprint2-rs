@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use generational_arena::Arena;
 use itertools::Itertools;
 use nalgebra::Vector3;
-use crate::{Event, Game, Mesh, SpriteMesh, World, log};
+use crate::{Event, Game, Mesh, SpriteMesh, Timer, World, log};
 use glow::*;
 
 pub struct Engine {
@@ -12,6 +12,7 @@ pub struct Engine {
     pub width:i32,
     pub height:i32,
     pub meshes:Arena<Mesh>,
+    timer:Timer,
     sprite_meshes:HashMap<crate::Texture, SpriteMesh>
 }
 
@@ -23,6 +24,7 @@ impl Engine {
             width:0,
             height:0,
             meshes:Arena::new(),
+            timer:Timer::default(),
             sprite_meshes:HashMap::new()
         }
     }
@@ -103,17 +105,20 @@ impl Engine {
         }
     }
 
-    pub fn update(&mut self, e:Event, game:&mut Game) {
+    pub fn on_event(&mut self, e:Event, game:&mut Game) {
         match e {
             Event::Initialize => {
                 self.setup_shaders();
-                game.update(self, e);
+                game.on_event(self, e);
             }
             Event::Update(_) => {
-                game.update(self, e);
+                game.on_event(self, e);
             }
             Event::Draw(_) => {
+                game.on_event(self, e);
                 self.draw();
+                self.timer.on_draw();
+                log(&format!("{}", self.timer.draw_delta_avg()));
             }
         }
     }

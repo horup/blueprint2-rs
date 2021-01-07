@@ -40,12 +40,12 @@ pub fn start() {
     let mut engine = Engine::new(gl);
     let mut game = Game::new();
 
-    engine.update(Event::Initialize, &mut game);
+    engine.on_event(Event::Initialize, &mut game);
     render_loop.run(move |running| { 
         engine.width = canvas.width() as i32;
         engine.height = canvas.height() as i32;
-        engine.update(Event::Update(1.0), &mut game);
-        engine.update(Event::Draw(1.0), &mut game);
+        engine.on_event(Event::Update(1.0), &mut game);
+        engine.on_event(Event::Draw(1.0), &mut game);
     });
 
 
