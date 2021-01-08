@@ -133,11 +133,18 @@ impl Engine {
         }
     }
 
+    fn context(&mut self) -> shared::Context {
+        shared::Context {
+            current:&mut self.current
+        }
+    }
+
     pub fn tick(&mut self, game:&mut Game) {
+        
         if self.initialized == false {
             self.initialized = true;
             self.setup_shaders();
-            game.on_event(self, Event::Initialize);
+            game.on_event(self.context(), Event::Initialize);
             self.tick(game);
             return;
         }
@@ -153,16 +160,20 @@ impl Engine {
         let frame_time = frame_time;
         self.accumulator += frame_time;
         let dt = 1.0 / self.tick_rate as f64;
+       
+
         while self.accumulator >= dt {
             self.previous = self.current.clone();
-            game.on_event(self, Event::Update(self.t, dt));
+            let t = self.t;
+            game.on_event(self.context(), Event::Update(t, dt));
             self.t += dt;
             self.accumulator -= dt;
         }
 
         let alpha = self.accumulator / dt;
         
-        game.on_event(self, Event::BeforeRender(self.current_time, frame_time, alpha));
+        let current_time = self.current_time;
+        game.on_event(self.context(), Event::BeforeRender(current_time, frame_time, alpha));
         self.draw(alpha);
     }
 }

@@ -1,7 +1,7 @@
-use super::{Enginelike, Event};
+use super::{Context, Enginelike, Event};
 pub trait Gamelike {
     type GameThing;
     type GameEvent;
 
-    fn on_event(&mut self, engine:&mut impl Enginelike, event:Event);
+    fn on_event(&mut self, context:Context, event:Event);
 }

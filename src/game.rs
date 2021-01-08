@@ -8,7 +8,7 @@ impl Gamelike for Game {
     type GameThing = ();
     type GameEvent = ();
 
-    fn on_event(&mut self, engine:&mut impl Enginelike, event:Event) {
+    fn on_event(&mut self, context:Context, event:Event) {
         match event {
             Event::Initialize => {
                /* engine.log("Game initialized");
