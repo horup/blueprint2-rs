@@ -1,6 +1,6 @@
 use generational_arena::{Arena, IterMut};
 
-use crate::Thing;
+use super::Thing;
 
 #[derive(Clone)]
 pub struct World {

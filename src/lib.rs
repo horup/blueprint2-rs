@@ -1,25 +1,6 @@
-mod event;
-pub use event::*;
-mod vertex;
-pub use vertex::*;
-mod mesh;
-pub use mesh::*;
-mod world;
-pub use world::*;
-mod engine;
-pub use engine::*;
-mod thing;
-pub use thing::*;
-mod sprite;
-pub use sprite::*;
-mod spritemesh;
-pub use spritemesh::*;
-mod texture;
-pub use texture::*;
-mod game;
-pub use game::*;
+pub mod shared;
+pub mod engine;
+pub mod game;
 
-mod log;
-pub use log::*;
 mod wasm_main;
 pub use wasm_main::*;

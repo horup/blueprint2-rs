@@ -1,6 +1,4 @@
-use glow::Context;
-
-use crate::{Mesh, Texture};
+use super::Texture;
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
 /// An object which encapsulates the state of a sprite.

@@ -3,7 +3,9 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use glow::*;
 
-use crate::{Engine, Event, Game, World, log};
+use crate::shared::*;
+use crate::game::*;
+use crate::engine::*;
 
 
 // TODO: add console out instead of stack exception to improve debugability

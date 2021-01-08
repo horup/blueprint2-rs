@@ -1,5 +1,5 @@
 use glow::Context;
-use crate::{Mesh, Vertex};
+use super::{Mesh, Vertex};
 use nalgebra::Vector3;
 
 

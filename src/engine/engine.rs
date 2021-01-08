@@ -3,8 +3,12 @@ use std::collections::HashMap;
 use generational_arena::Arena;
 use itertools::Itertools;
 use nalgebra::Vector3;
-use crate::{Event, Game, Mesh, SpriteMesh, World, log};
+
+use crate::{game::Game, shared::*, shared};
+
 use glow::*;
+
+use super::{SpriteMesh, Mesh};
 
 pub struct Engine {
     pub current:World,
@@ -14,7 +18,7 @@ pub struct Engine {
     pub height:i32,
     meshes:Arena<Mesh>,
     tick_rate:u32,
-    sprite_meshes:HashMap<crate::Texture, SpriteMesh>,
+    sprite_meshes:HashMap<shared::Texture, SpriteMesh>,
     initialized:bool,
     current_time:f64,
     accumulator:f64,
@@ -57,8 +61,8 @@ impl Engine {
         unsafe {
     
             let gl = &mut self.gl;
-            let vertex_shader_source = include_str!("../shaders/default.vert");
-            let fragment_shader_source = include_str!("../shaders/default.frag");
+            let vertex_shader_source = include_str!("./shaders/default.vert");
+            let fragment_shader_source = include_str!("./shaders/default.frag");
     
             let program = gl.create_program().expect("Cannot create program");
         

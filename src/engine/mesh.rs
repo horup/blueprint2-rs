@@ -1,7 +1,7 @@
 use glow::{Context, HasContext, WebBufferKey, WebVertexArrayKey};
 use web_sys::WebGlVertexArrayObject;
 
-use crate::log;
+use crate::shared::log;
 
 use super::Vertex;
 
