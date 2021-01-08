@@ -133,9 +133,10 @@ impl Engine {
         }
     }
 
-    fn context(&mut self) -> shared::Context {
+    fn create_context(&mut self, event:Event) -> shared::Context {
         shared::Context {
-            current:&mut self.current
+            current:&mut self.current,
+            event:event
         }
     }
 
@@ -144,7 +145,7 @@ impl Engine {
         if self.initialized == false {
             self.initialized = true;
             self.setup_shaders();
-            game.on_event(self.context(), Event::Initialize);
+            game.on_event(self.create_context(Event::Initialize));
             self.tick(game);
             return;
         }
@@ -165,7 +166,7 @@ impl Engine {
         while self.accumulator >= dt {
             self.previous = self.current.clone();
             let t = self.t;
-            game.on_event(self.context(), Event::Update(t, dt));
+            game.on_event(self.create_context(Event::Update(t, dt)));
             self.t += dt;
             self.accumulator -= dt;
         }
@@ -173,7 +174,7 @@ impl Engine {
         let alpha = self.accumulator / dt;
         
         let current_time = self.current_time;
-        game.on_event(self.context(), Event::BeforeRender(current_time, frame_time, alpha));
+        game.on_event(self.create_context(Event::BeforeRender(current_time, frame_time, alpha)));
         self.draw(alpha);
     }
 }

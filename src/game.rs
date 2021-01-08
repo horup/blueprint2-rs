@@ -8,8 +8,8 @@ impl Gamelike for Game {
     type GameThing = ();
     type GameEvent = ();
 
-    fn on_event(&mut self, context:Context, event:Event) {
-        match event {
+    fn on_event(&mut self, c:Context) {
+        match c.event {
             Event::Initialize => {
                /* engine.log("Game initialized");
                 let t1 = engine.current.new_thing();
