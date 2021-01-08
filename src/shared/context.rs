@@ -1,6 +1,7 @@
-use super::{Event, World};
+use super::{Event, State};
 
 pub struct Context<'a> {
-    pub current:&'a mut World,
+    pub current:&'a mut State,
+    pub previous:&'a mut State,
     pub event:Event
 }

@@ -11,8 +11,8 @@ use glow::*;
 use super::{SpriteMesh, Mesh};
 
 pub struct Engine {
-    pub current:World,
-    pub previous:World,
+    pub current:State,
+    pub previous:State,
     gl:glow::Context,
     pub width:i32,
     pub height:i32,
@@ -25,16 +25,12 @@ pub struct Engine {
     t:f64
 }
 
-impl Enginelike for Engine {
-    
-}
-
 impl Engine {
     pub fn new(gl:glow::Context) -> Self {
         Self {
             tick_rate:20,
-            current:World::new(),
-            previous:World::new(),
+            current:State::new(),
+            previous:State::new(),
             gl,
             width:0,
             height:0,
@@ -136,6 +132,7 @@ impl Engine {
     fn create_context(&mut self, event:Event) -> shared::Context {
         shared::Context {
             current:&mut self.current,
+            previous:&mut self.previous,
             event:event
         }
     }

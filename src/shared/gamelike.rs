@@ -1,4 +1,4 @@
-use super::{Context, Enginelike, Event};
+use super::{Context, Event};
 pub trait Gamelike {
     type GameThing;
     type GameEvent;

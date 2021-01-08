@@ -3,11 +3,11 @@ use generational_arena::{Arena, IterMut};
 use super::Thing;
 
 #[derive(Clone)]
-pub struct World {
+pub struct State {
     pub things:Arena<Thing>
 }
 
-impl World {
+impl State {
     pub fn new() -> Self {
         Self {
             things:Arena::new()
