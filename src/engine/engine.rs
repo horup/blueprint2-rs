@@ -4,7 +4,7 @@ use generational_arena::Arena;
 use itertools::Itertools;
 use nalgebra::Vector3;
 
-use crate::{game::Game, shared::*, shared};
+use crate::{shared::*, shared};
 
 use glow::*;
 
@@ -140,13 +140,13 @@ impl Engine {
         }
     }
 
-    pub fn tick(&mut self, game:&mut Game) {
+    pub fn update(&mut self, game:&mut impl Gamelike) {
         
         if self.initialized == false {
             self.initialized = true;
             self.setup_shaders();
-            game.on_event(self.create_context(Event::Initialize));
-            self.tick(game);
+            game.update(self.create_context(Event::Initialize));
+            self.update(game);
             return;
         }
 
@@ -166,7 +166,7 @@ impl Engine {
         while self.accumulator >= dt {
             self.previous = self.current.clone();
             let t = self.t;
-            game.on_event(self.create_context(Event::Update(t, dt)));
+            game.update(self.create_context(Event::FixedStep(t, dt)));
             self.t += dt;
             self.accumulator -= dt;
         }
@@ -174,7 +174,7 @@ impl Engine {
         let alpha = self.accumulator / dt;
         
         let current_time = self.current_time;
-        game.on_event(self.create_context(Event::BeforeRender(current_time, frame_time, alpha)));
+        game.update(self.create_context(Event::Draw(current_time, frame_time, alpha)));
         self.draw(alpha);
     }
 }

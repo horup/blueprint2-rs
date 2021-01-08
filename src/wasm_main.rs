@@ -44,41 +44,8 @@ pub fn start() {
     render_loop.run(move |running| { 
         engine.width = canvas.width() as i32;
         engine.height = canvas.height() as i32;
-        engine.tick(&mut game);
+        engine.update(&mut game);
     });
-
-
- /*   let mut render = Render::new(gl);
-  
-    let q1 = render.insert_quad();
-    let q2 = render.insert_quad();
-
-    let m = render.get_mesh_mut(q2).unwrap();
-    for v in &mut m.vertices {
-        v.x += 0.5;
-        v.y += 0.5;
-    }
-    let m = render.get_mesh(q2).unwrap();
-    m.update(&render.gl);
-
-    
-    let mut world = World::new();
-    update(Context {
-        world:&mut world,
-        event:Event::Initialize
-    });
-
-    render_loop.run(move |running| {
-        render.width = canvas.width() as i32;
-        render.height = canvas.height() as i32;
-
-        update(Context {
-            world:&mut world,
-            event:Event::Update(1.0)
-        });
-
-        render.draw();
-    });*/
 }
 
 
