@@ -1,22 +1,22 @@
 use generational_arena::{Arena, IterMut};
 
-use super::Thing;
+use super::Entity;
 
 #[derive(Clone)]
 pub struct State {
-    pub things:Arena<Thing>
+    pub entities:Arena<Entity>
 }
 
 impl State {
     pub fn new() -> Self {
         Self {
-            things:Arena::new()
+            entities:Arena::new()
         }
     }
 
-    pub fn new_thing(&mut self) -> &mut Thing {
-        let id = self.things.insert(Thing::default());
-        let mut thing = self.things.get_mut(id).unwrap();
+    pub fn new_entity(&mut self) -> &mut Entity {
+        let id = self.entities.insert(Entity::default());
+        let mut thing = self.entities.get_mut(id).unwrap();
         thing
     }
 }

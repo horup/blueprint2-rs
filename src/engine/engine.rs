@@ -86,7 +86,7 @@ impl Engine {
     }
 
     pub unsafe fn draw_sprites(&mut self) {
-        let textures_in_use= self.current.things.iter().map(|(_, thing)| thing.sprite.texture).unique().collect_vec();
+        let textures_in_use= self.current.entities.iter().map(|(_, thing)| thing.sprite.texture).unique().collect_vec();
         
         // ensure a sprite_mesh exist for all textures in use
         for texture in &textures_in_use {
@@ -101,7 +101,7 @@ impl Engine {
         }
 
         // populate the sprite meshes with sprite data
-        for (_, thing) in self.current.things.iter() {
+        for (_, thing) in self.current.entities.iter() {
             if let Some(sprite_mesh) = self.sprite_meshes.get_mut(&thing.sprite.texture) {
                 sprite_mesh.push_sprite(thing.pos);
             }

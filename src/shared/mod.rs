@@ -13,8 +13,8 @@ pub use sprite::*;
 mod texture;
 pub use texture::*;
 
-mod thing;
-pub use thing::*;
+mod entity;
+pub use entity::*;
 
 mod state;
 pub use state::*;
