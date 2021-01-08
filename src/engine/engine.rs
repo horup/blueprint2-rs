@@ -10,23 +10,23 @@ use glow::*;
 
 use super::{Assets, Mesh, SpriteMesh};
 
-pub struct Engine {
-    pub current:State,
-    pub previous:State,
+pub struct Engine<T:Gamelike> {
+    pub current:State<T>,
+    pub previous:State<T>,
     pub assets:Assets,
     gl:glow::Context,
     pub width:i32,
     pub height:i32,
     meshes:Arena<Mesh>,
     tick_rate:u32,
-    sprite_meshes:HashMap<shared::Texture, SpriteMesh>,
+    sprite_meshes:HashMap<T::Texture, SpriteMesh>,
     initialized:bool,
     current_time:f64,
     accumulator:f64,
     t:f64
 }
 
-impl Engine {
+impl<T:Gamelike> Engine<T> {
     pub fn new(gl:glow::Context) -> Self {
         Self {
             tick_rate:20,
@@ -133,8 +133,8 @@ impl Engine {
 
     fn create_context(&mut self, event:Event) -> shared::Context {
         shared::Context {
-            current:&mut self.current,
-            previous:&mut self.previous,
+           /* current:&mut self.current,
+            previous:&mut self.previous,*/
             event:event
         }
     }
@@ -163,7 +163,7 @@ impl Engine {
        
 
         while self.accumulator >= dt {
-            self.previous = self.current.clone();
+            //self.previous = self.current.clone();
             let t = self.t;
             game.update(self.create_context(Event::FixedStep(t, dt)));
             self.t += dt;

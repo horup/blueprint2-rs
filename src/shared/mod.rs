@@ -10,9 +10,6 @@ pub use log::*;
 mod sprite;
 pub use sprite::*;
 
-mod texture;
-pub use texture::*;
-
 mod entity;
 pub use entity::*;
 

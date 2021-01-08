@@ -37,9 +37,8 @@ pub fn start() {
         glow::RenderLoop::from_request_animation_frame()
     );
 
-
-    let mut engine = Engine::new(gl);
     let mut game = Game::new();
+    let mut engine:Engine<Game> = Engine::new(gl);
 
     render_loop.run(move |running| { 
         engine.width = canvas.width() as i32;

@@ -1,5 +1,3 @@
-use super::Texture;
-
 pub struct Frame {
     pub u:f32,
     pub v:f32,
@@ -19,7 +17,7 @@ pub enum Animation {
 }*/
 
 pub struct SpriteSheet {
-    pub texture:Texture,
+    pub texture:(),
     pub frames:Vec<Frame>
 }
 

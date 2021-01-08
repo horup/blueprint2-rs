@@ -14,17 +14,17 @@ impl Gamelike for Game {
         match context.event {
             Event::Initialize => {
                 log("Game initialized");
-                let t1 = context.current.new_entity();
+             /*    let t1 = context.current.new_entity();
                 let t2 = context.current.new_entity();
                 t2.pos.x = 0.5;
-                t2.pos.y = 0.5;
+                t2.pos.y = 0.5;*/
 
                 
             }
             Event::FixedStep(time, dt) => {
-                for (_, t) in context.current.entities.iter_mut() {
+               /* for (_, t) in context.current.entities.iter_mut() {
                     t.pos.x += 0.1 * dt as f32;
-                }
+                }*/
             }
             Event::Draw(_,_,_) => {
                

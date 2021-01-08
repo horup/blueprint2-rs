@@ -1,15 +1,15 @@
-use super::Texture;
+use super::{Gamelike};
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
 /// An object which encapsulates the state of a sprite.
-pub struct Sprite {
-    pub texture:Texture
+pub struct Sprite<T:Gamelike> {
+    pub texture:T::Texture
 }
 
-impl Default for Sprite {
+impl<T:Gamelike> Default for Sprite<T> {
     fn default() -> Self {
         Self {
-            texture:Texture::None
+            texture:T::Texture::default()
         }
     }
 }

@@ -1,9 +1,7 @@
 
 use super::{Enginelike, Event, State};
 
-pub struct Context<'a> {
-    pub current:&'a mut State,
-    pub previous:&'a mut State,
+pub struct Context {
     pub event:Event
 }
 
