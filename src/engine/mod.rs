@@ -9,3 +9,6 @@ pub use spritemesh::*;
 
 mod vertex;
 pub use vertex::*;
+
+mod assets;
+pub use assets::*;

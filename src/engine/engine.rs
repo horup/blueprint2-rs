@@ -8,11 +8,12 @@ use crate::{shared::*, shared};
 
 use glow::*;
 
-use super::{SpriteMesh, Mesh};
+use super::{Assets, Mesh, SpriteMesh};
 
 pub struct Engine {
     pub current:State,
     pub previous:State,
+    pub assets:Assets,
     gl:glow::Context,
     pub width:i32,
     pub height:i32,
@@ -39,7 +40,8 @@ impl Engine {
             initialized:false,
             accumulator:0.0,
             current_time:Self::now_as_secs(),
-            t:0.0
+            t:0.0,
+            assets:Assets::default()
         }
     }
 
