@@ -1,3 +1,6 @@
+mod gamelike;
+pub use gamelike::*;
+
 mod event;
 pub use event::*;
 
@@ -15,3 +18,6 @@ pub use thing::*;
 
 mod world;
 pub use world::*;
+
+mod enginelike;
+pub use enginelike::*;

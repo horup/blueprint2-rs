@@ -25,6 +25,10 @@ pub struct Engine {
     t:f64
 }
 
+impl Enginelike for Engine {
+    
+}
+
 impl Engine {
     pub fn new(gl:glow::Context) -> Self {
         Self {
