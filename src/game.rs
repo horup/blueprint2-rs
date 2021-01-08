@@ -5,8 +5,10 @@ pub struct Game {
 }
 
 impl Gamelike for Game {
-    type GameThing = ();
+    type GameEntity =  ();
     type GameEvent = ();
+    type Texture = ();
+    type Spritesheet = ();
 
     fn update(&mut self, context:Context) {
         match context.event {

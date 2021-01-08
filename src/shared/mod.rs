@@ -21,3 +21,6 @@ pub use state::*;
 
 mod context;
 pub use context::*;
+
+mod sprite_sheet;
+pub use sprite_sheet::*;
