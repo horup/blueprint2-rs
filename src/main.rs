@@ -48,6 +48,10 @@ pub fn start() {
     });
 }
 
+pub fn main() {
+    // TODO: implement native
+}
+
 
 //https://github.com/grovesNL/glow/blob/main/examples/hello/src/main.rs
 //https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
