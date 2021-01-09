@@ -24,3 +24,6 @@ pub use spritesheet::*;
 
 mod enginelike;
 pub use enginelike::*;
+
+mod hashid;
+pub use hashid::*;

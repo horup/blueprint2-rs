@@ -17,9 +17,10 @@ pub struct Engine<T:Gamelike> {
     gl:glow::Context,
     pub width:i32,
     pub height:i32,
+    pub game:T,
     meshes:Arena<Mesh>,
     tick_rate:u32,
-    sprite_meshes:HashMap<T::Texture, SpriteMesh>,
+    sprite_meshes:HashMap<HashId, SpriteMesh>,
     initialized:bool,
     current_time:f64,
     accumulator:f64,
@@ -33,6 +34,7 @@ impl<T:Gamelike> Engine<T> {
             current:State::new(),
             previous:State::new(),
             gl,
+            game:T::default(),
             width:0,
             height:0,
             meshes:Arena::new(),
@@ -139,13 +141,14 @@ impl<T:Gamelike> Engine<T> {
         }
     }
 
-    pub fn update(&mut self, game:&mut impl Gamelike) {
+    pub fn update(&mut self) {
         
         if self.initialized == false {
             self.initialized = true;
             self.setup_shaders();
-            game.update(self.create_context(Event::Initialize));
-            self.update(game);
+            let c = self.create_context(Event::Initialize);
+            self.game.update(c);
+            self.update();
             return;
         }
 
@@ -165,7 +168,8 @@ impl<T:Gamelike> Engine<T> {
         while self.accumulator >= dt {
             //self.previous = self.current.clone();
             let t = self.t;
-            game.update(self.create_context(Event::FixedStep(t, dt)));
+            let c = self.create_context(Event::FixedStep(t, dt));
+            self.game.update(c);
             self.t += dt;
             self.accumulator -= dt;
         }
@@ -173,7 +177,7 @@ impl<T:Gamelike> Engine<T> {
         let alpha = self.accumulator / dt;
         
         let current_time = self.current_time;
-        game.update(self.create_context(Event::Draw(current_time, frame_time, alpha)));
+        //self.game.update(self.create_context(Event::Draw(current_time, frame_time, alpha)));
         self.draw(alpha);
     }
 }

@@ -1,5 +1,6 @@
 use crate::{shared};
 use crate::shared::*;
+#[derive(Default)]
 pub struct Game {
 
 }
@@ -7,8 +8,6 @@ pub struct Game {
 impl Gamelike for Game {
     type GameEntity =  ();
     type GameEvent = ();
-    type Texture = ();
-    type Spritesheet = ();
 
     fn update(&mut self, context:Context) {
         match context.event {

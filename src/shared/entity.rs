@@ -6,7 +6,7 @@ use super::{Gamelike, Sprite};
 #[derive(Clone, Copy, PartialEq)]
 pub struct Entity<T:Gamelike> {
     pub pos:Vector3<f32>,
-    pub sprite:Sprite<T>,
+    pub sprite:Sprite,
     pub ext:T::GameEntity
 }
 

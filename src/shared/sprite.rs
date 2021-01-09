@@ -1,15 +1,15 @@
-use super::{Gamelike};
+use super::{HashId};
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
 /// An object which encapsulates the state of a sprite.
-pub struct Sprite<T:Gamelike> {
-    pub texture:T::Texture
+pub struct Sprite {
+    pub texture:HashId
 }
 
-impl<T:Gamelike> Default for Sprite<T> {
+impl Default for Sprite {
     fn default() -> Self {
         Self {
-            texture:T::Texture::default()
+            texture:HashId::default()
         }
     }
 }

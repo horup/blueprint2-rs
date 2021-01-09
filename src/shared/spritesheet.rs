@@ -1,3 +1,5 @@
+use super::HashId;
+
 pub struct Frame {
     pub u:f32,
     pub v:f32,
@@ -17,7 +19,7 @@ pub enum Animation {
 }*/
 
 pub struct SpriteSheet {
-    pub texture:(),
+    pub texture:HashId,
     pub frames:Vec<Frame>
 }
 

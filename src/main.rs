@@ -38,13 +38,11 @@ pub fn start() {
     );
 
     // TODO: put state here instead of contained in game or engine
-    let mut game = Game::new();
     let mut engine:Engine<Game> = Engine::new(gl);
 
     render_loop.run(move |running| { 
         engine.width = canvas.width() as i32;
         engine.height = canvas.height() as i32;
-        engine.update(&mut game);
     });
 }
 
