@@ -37,6 +37,7 @@ pub fn start() {
         glow::RenderLoop::from_request_animation_frame()
     );
 
+    // TODO: put state here instead of contained in game or engine
     let mut game = Game::new();
     let mut engine:Engine<Game> = Engine::new(gl);
 
