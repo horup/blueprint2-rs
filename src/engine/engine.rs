@@ -8,12 +8,13 @@ use crate::{shared::*, shared};
 
 use glow::*;
 
-use super::{Assets, Mesh, SpriteMesh};
+use super::{Mesh, SpriteMesh};
 
 pub struct Engine<T:Gamelike> {
     pub current:State<T>,
     pub previous:State<T>,
     pub assets:Assets,
+    pub states:States<T>,
     gl:glow::Context,
     pub width:i32,
     pub height:i32,
@@ -31,8 +32,9 @@ impl<T:Gamelike> Engine<T> {
     pub fn new(gl:glow::Context) -> Self {
         Self {
             tick_rate:20,
-            current:State::new(),
-            previous:State::new(),
+            current:State::default(),
+            previous:State::default(),
+            states:States::default(),
             gl,
             game:T::default(),
             width:0,
@@ -133,21 +135,21 @@ impl<T:Gamelike> Engine<T> {
         }
     }
 
-    fn create_context(&mut self, event:Event) -> shared::Context {
-        shared::Context {
+    fn update_game(&mut self, event:Event) {
+        let mut c = super::Context {
            /* current:&mut self.current,
             previous:&mut self.previous,*/
             event:event
-        }
+        };
+
+        self.game.update(&mut c);
     }
 
     pub fn update(&mut self) {
-        
         if self.initialized == false {
             self.initialized = true;
             self.setup_shaders();
-            let c = self.create_context(Event::Initialize);
-            self.game.update(c);
+            self.update_game(Event::Initialize);
             self.update();
             return;
         }
@@ -168,8 +170,7 @@ impl<T:Gamelike> Engine<T> {
         while self.accumulator >= dt {
             //self.previous = self.current.clone();
             let t = self.t;
-            let c = self.create_context(Event::FixedStep(t, dt));
-            self.game.update(c);
+            self.update_game(Event::FixedStep(t, dt));
             self.t += dt;
             self.accumulator -= dt;
         }

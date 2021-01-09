@@ -1,3 +1,5 @@
+
+#[derive(Copy, Clone)]
 pub enum Event {
     Initialize,
     /// `time`, `delta_time`

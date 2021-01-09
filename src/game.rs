@@ -9,8 +9,8 @@ impl Gamelike for Game {
     type GameEntity =  ();
     type GameEvent = ();
 
-    fn update(&mut self, context:Context) {
-        match context.event {
+    fn update(&mut self, context:&mut dyn Enginelike) {
+        match context.event() {
             Event::Initialize => {
                 log("Game initialized");
              /*    let t1 = context.current.new_entity();
