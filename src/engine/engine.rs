@@ -4,7 +4,7 @@ use generational_arena::Arena;
 use itertools::Itertools;
 use nalgebra::Vector3;
 
-use crate::{shared::{self, Event, Game, HashId, State, States, log}};
+use crate::{shared::{self, Context as SharedContext, Event, Game, HashId, State, States, log}};
 
 use glow::*;
 
@@ -136,7 +136,7 @@ impl<T:Game> Engine<T> {
     }
 
     fn update_game(&mut self, event:Event) {
-        let mut c = super::Context {
+        let mut c = SharedContext {
            /* current:&mut self.current,
             previous:&mut self.previous,*/
             event:event,
