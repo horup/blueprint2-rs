@@ -1,15 +1,14 @@
-use crate::{shared};
-use crate::shared::*;
+use crate::{shared::{Game as GameTrait, Context, Event, log}};
 #[derive(Default)]
 pub struct Game {
 
 }
 
-impl Gamelike for Game {
+impl GameTrait for Game {
     type GameEntity =  ();
     type GameEvent = ();
 
-    fn update(&mut self, context:&mut dyn Enginelike) {
+    fn update(&mut self, context:&mut Context<Self>) {
         match context.event() {
             Event::Initialize => {
                 log("Game initialized");

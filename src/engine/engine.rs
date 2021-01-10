@@ -4,16 +4,16 @@ use generational_arena::Arena;
 use itertools::Itertools;
 use nalgebra::Vector3;
 
-use crate::{shared::*, shared};
+use crate::{shared::{self, Event, Game, HashId, State, States, log}};
 
 use glow::*;
 
-use super::{Mesh, SpriteMesh};
+use super::{Assets, Mesh, SpriteMesh};
 
-pub struct Engine<T:Gamelike> {
+pub struct Engine<T:Game> {
     pub current:State<T>,
     pub previous:State<T>,
-    pub assets:Assets,
+    pub assets:super::Assets,
     pub states:States<T>,
     gl:glow::Context,
     pub width:i32,
@@ -28,7 +28,7 @@ pub struct Engine<T:Gamelike> {
     t:f64
 }
 
-impl<T:Gamelike> Engine<T> {
+impl<T:Game> Engine<T> {
     pub fn new(gl:glow::Context) -> Self {
         Self {
             tick_rate:20,
@@ -139,7 +139,8 @@ impl<T:Gamelike> Engine<T> {
         let mut c = super::Context {
            /* current:&mut self.current,
             previous:&mut self.previous,*/
-            event:event
+            event:event,
+            states:&mut self.states
         };
 
         self.game.update(&mut c);

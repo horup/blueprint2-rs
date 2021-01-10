@@ -1,5 +1,5 @@
-mod gamelike;
-pub use gamelike::*;
+mod game;
+pub use game::*;
 
 mod event;
 pub use event::*;
@@ -16,8 +16,8 @@ pub use entity::*;
 mod state;
 pub use state::*;
 
-mod enginelike;
-pub use enginelike::*;
+mod context;
+pub use context::*;
 
 mod spritesheet;
 pub use spritesheet::*;
