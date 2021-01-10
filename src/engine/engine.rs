@@ -140,7 +140,8 @@ impl<T:Game> Engine<T> {
            /* current:&mut self.current,
             previous:&mut self.previous,*/
             event:event,
-            states:&mut self.states
+            states:&mut self.states,
+            assets:&mut self.assets
         };
 
         self.game.update(&mut c);
