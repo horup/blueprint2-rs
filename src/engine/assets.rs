@@ -10,6 +10,6 @@ pub struct Assets  {
 
 impl AssetsTrait for Assets {
     fn load_texture(&mut self, id:HashId, image:image::DynamicImage) {
-        todo!()
+        
     }
 }

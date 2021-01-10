@@ -43,6 +43,7 @@ pub fn start() {
     render_loop.run(move |running| { 
         engine.width = canvas.width() as i32;
         engine.height = canvas.height() as i32;
+        engine.update();
     });
 }
 
