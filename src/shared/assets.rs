@@ -1,7 +1,7 @@
 use std::{collections::{HashMap}, io::Cursor, vec};
 use image::DynamicImage;
 use crate::shared::HashId;
-use super::SpriteSheet;
+use super::{SpriteSheet, log};
 use image::*;
 
 pub struct RGBAImage {
@@ -19,6 +19,10 @@ pub trait Assets {
         let mut buffer = vec![0; res.total_bytes() as usize];
         buffer.as_mut_slice();
         res.read_image(&mut buffer);
+
+        for subpixel in &buffer {
+            log(&format!("{}", subpixel));
+        }
   
         self.load_texture(id,  RGBAImage {
             width:w,
