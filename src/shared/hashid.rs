@@ -13,7 +13,7 @@ impl HashId {
 }
 
 impl From<&str> for HashId {
-    fn from(_: &str) -> Self {
-        todo!()
+    fn from(id: &str) -> Self {
+        Self::new(id)
     }
 }
