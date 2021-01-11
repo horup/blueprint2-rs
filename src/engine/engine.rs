@@ -9,7 +9,7 @@ use crate::{shared::{self, Context as SharedContext, Event, Game, HashId, State,
 use glow::*;
 
 use super::{Assets, Mesh, SpriteMesh};
-
+// TODO: use RC for glow::Context
 pub struct Engine<T:Game> {
     pub assets:Assets,
     pub states:States<T>,
@@ -150,8 +150,10 @@ impl<T:Game> Engine<T> {
             self.update_game(Event::Initialize);
             self.assets.update(&mut self.gl);
             self.update();
+
             return;
         }
+
 
         let new_time = Self::now_as_secs();
         let mut frame_time = new_time - self.current_time;

@@ -1,6 +1,7 @@
 use std::{collections::HashMap};
 
 use image::DynamicImage;
+use image::*;
 
 use crate::shared::{HashId, SpriteSheet, log};
 use crate::shared::{Assets as AssetsTrait};
@@ -27,15 +28,18 @@ impl Assets {
 
                     let level = 0;
                     let internal_format = glow::RGBA as i32;
-                    let width = 1;
-                    let height = 1;
+                    let width = img.width() as i32;
+                    let height = img.height() as i32;
                     let border = 0;
                     let src_format = glow::RGBA;
                     let src_type = glow::UNSIGNED_BYTE;
-                    let ty = 0;
-                    //let pixels = Some(img.to_bytes().as_slice());
+                    let pixels = Some(img.to_bytes().as_slice());
+                    let bytes = img.to_bytes();
+                    //let bytes = [255,0,255,255, 255,255,0,255, 255,255,255,255, 255,255,255,255];
                     gl.tex_image_2d(glow::TEXTURE_2D, level, internal_format, 
-                        width, height, border, src_format, ty, Some(&img.to_bytes()));
+                        width, height, border, src_format, src_type, Some(&bytes));
+
+                    gl.generate_mipmap(glow::TEXTURE_2D);
                 }
 
                 log("texture created");
