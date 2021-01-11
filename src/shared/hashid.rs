@@ -11,3 +11,9 @@ impl HashId {
         Self(hashed)
     }
 }
+
+impl From<&str> for HashId {
+    fn from(_: &str) -> Self {
+        todo!()
+    }
+}

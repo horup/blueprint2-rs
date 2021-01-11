@@ -1,3 +1,5 @@
+use image::DynamicImage;
+
 use crate::{shared::{Context, Event, Game as GameTrait, HashId, log}};
 #[derive(Default)]
 pub struct Game {
@@ -12,16 +14,14 @@ impl GameTrait for Game {
         match context.event {
             Event::Initialize => {
                 log("Game initialized");
-
-                let bytes = include_bytes!("./assets/textures/spritesheet.png");
-                let img = image::load_from_memory(bytes).unwrap();
-                context.assets.load_texture(HashId::new("spritesheet01"), img);
-             /*    let t1 = context.current.new_entity();
-                let t2 = context.current.new_entity();
-                t2.pos.x = 0.5;
-                t2.pos.y = 0.5;*/
-
+                let state = context.states.current_mut();
+                let mut assets = &mut context.assets;
+                assets.load_texture_from_bytes("spritesheet01", include_bytes!("./assets/textures/spritesheet.png"));
                 
+                let t1 = state.new_entity();
+                let t2 = state.new_entity();
+                t2.pos.x = 0.5;
+                t2.pos.y = 0.5;
             }
             Event::FixedStep(time, dt) => {
                /* for (_, t) in context.current.entities.iter_mut() {

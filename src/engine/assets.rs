@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::shared::HashId;
+use crate::shared::{HashId, SpriteSheet};
 use crate::shared::{Assets as AssetsTrait};
 
 #[derive(Default)]
@@ -9,7 +9,10 @@ pub struct Assets  {
 }
 
 impl AssetsTrait for Assets {
-    fn load_texture(&mut self, id:HashId, image:image::DynamicImage) {
+    fn load_texture(&mut self, id:&str, image:image::DynamicImage) {
+
+    }
+    fn load_spritesheet(&mut self, id:&str, spritesheet:SpriteSheet) {
         
     }
 }

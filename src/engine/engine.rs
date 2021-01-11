@@ -11,9 +11,7 @@ use glow::*;
 use super::{Assets, Mesh, SpriteMesh};
 
 pub struct Engine<T:Game> {
-    pub current:State<T>,
-    pub previous:State<T>,
-    pub assets:super::Assets,
+    pub assets:Assets,
     pub states:States<T>,
     gl:glow::Context,
     pub width:i32,
@@ -32,8 +30,6 @@ impl<T:Game> Engine<T> {
     pub fn new(gl:glow::Context) -> Self {
         Self {
             tick_rate:20,
-            current:State::default(),
-            previous:State::default(),
             states:States::default(),
             gl,
             game:T::default(),
@@ -92,7 +88,7 @@ impl<T:Game> Engine<T> {
     }
 
     pub unsafe fn draw_sprites(&mut self) {
-        let textures_in_use= self.current.entities.iter().map(|(_, thing)| thing.sprite.texture).unique().collect_vec();
+        let textures_in_use= self.states.current_mut().entities.iter().map(|(_, thing)| thing.sprite.texture).unique().collect_vec();
         
         // ensure a sprite_mesh exist for all textures in use
         for texture in &textures_in_use {
@@ -107,7 +103,7 @@ impl<T:Game> Engine<T> {
         }
 
         // populate the sprite meshes with sprite data
-        for (_, thing) in self.current.entities.iter() {
+        for (_, thing) in self.states.current_mut().entities.iter() {
             if let Some(sprite_mesh) = self.sprite_meshes.get_mut(&thing.sprite.texture) {
                 sprite_mesh.push_sprite(thing.pos);
             }
