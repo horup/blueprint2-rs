@@ -16,7 +16,7 @@ impl GameTrait for Game {
                 log("Game initialized");
                 let state = context.states.current_mut();
                 let mut assets = &mut context.assets;
-                assets.load_texture_from_bytes("sheet01".into(), 
+                assets.load_texture_from_png_bytes("sheet01".into(), 
                 include_bytes!("./assets/textures/spritesheet.png"));
                 assets.load_spritesheet("sheet01".into(), 
                 SpriteSheet::new("sheet01".into()));

@@ -1,9 +1,6 @@
 use std::{collections::HashMap};
 
-use image::DynamicImage;
-use image::*;
-
-use crate::shared::{HashId, SpriteSheet, log};
+use crate::shared::{HashId, RGBAImage, SpriteSheet, log};
 use crate::shared::{Assets as AssetsTrait};
 
 use glow::*;
@@ -12,7 +9,7 @@ type TextureKey = WebTextureKey;
 
 #[derive(Default)]
 pub struct Assets  {
-    pub textures:HashMap<HashId, (DynamicImage, TextureKey)>,
+    pub textures:HashMap<HashId, (RGBAImage, TextureKey)>,
     pub spritesheets:HashMap<HashId, SpriteSheet>
 }
 
@@ -28,16 +25,16 @@ impl Assets {
 
                     let level = 0;
                     let internal_format = glow::RGBA as i32;
-                    let width = img.width() as i32;
-                    let height = img.height() as i32;
+                    let width = img.width as i32;
+                    let height = img.height as i32;
+                    log(&format!("{}", width));
                     let border = 0;
                     let src_format = glow::RGBA;
                     let src_type = glow::UNSIGNED_BYTE;
-                    let pixels = Some(img.to_bytes().as_slice());
-                    let bytes = img.to_bytes();
+                    let pixels = Some(img.pixels.as_slice());
                     //let bytes = [255,0,255,255, 255,255,0,255, 255,255,255,255, 255,255,255,255];
                     gl.tex_image_2d(glow::TEXTURE_2D, level, internal_format, 
-                        width, height, border, src_format, src_type, Some(&bytes));
+                        width, height, border, src_format, src_type, pixels);
 
                     gl.generate_mipmap(glow::TEXTURE_2D);
                 }
@@ -50,7 +47,7 @@ impl Assets {
 }
 
 impl AssetsTrait for Assets {
-    fn load_texture(&mut self, id:HashId, image:DynamicImage) -> HashId {
+    fn load_texture(&mut self, id:HashId, image:RGBAImage) -> HashId {
         self.textures.insert(id, (image, TextureKey::default()));
         id
     }
