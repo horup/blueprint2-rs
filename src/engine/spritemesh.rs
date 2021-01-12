@@ -38,6 +38,7 @@ impl SpriteMesh {
     }
 
     /// Pushes a sprite to the mesh, which is drawn by calling `draw`
+    /// does not allocate memory. 
     pub fn push_sprite(&mut self, pos:Vector3<f32>) {
         if self.count < self.max_sprites {
             let mesh = &mut self.mesh;
