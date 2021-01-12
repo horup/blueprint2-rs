@@ -1,8 +1,7 @@
 use std::{collections::{HashMap}, io::Cursor, usize, vec};
-use image::DynamicImage;
+use image::{DynamicImage, ImageDecoder};
 use crate::shared::HashId;
-use super::{SpriteSheet, log};
-use image::*;
+use super::{Frame, SpriteSheet, log};
 
 pub struct RGBAImage {
     pub width:u32,
@@ -47,12 +46,22 @@ impl RGBAImage {
             pixels:pixels
         }
     }
+
+    /// Constructs a `Frame` with normalized coordinates based upon dimensions of `RGBAImage`
+    pub fn frame(&self, x:u32, y:u32, width:u32, height:u32) -> Frame {
+        Frame {
+            u:x as f32 / 1.0,
+            v:y as f32 / 1.0,
+            w: width as f32 / 1.0,
+            h: height as f32 / 1.0 
+        }
+    }
 }
 
 
 pub trait Assets {
-    fn load_texture(&mut self, id:HashId, image:RGBAImage) -> HashId;
-    fn load_texture_from_png_bytes(&mut self, id:HashId, bytes:&[u8]) -> HashId {
+    fn load_texture(&mut self, id:HashId, image:RGBAImage) -> &RGBAImage;
+    fn load_texture_from_png_bytes(&mut self, id:HashId, bytes:&[u8]) -> &RGBAImage {
         let cursor = Cursor::new(bytes);
         let res = image::png::PngDecoder::new(cursor).expect("image was not of png");
         let (w, h) = res.dimensions();
@@ -60,8 +69,7 @@ pub trait Assets {
         buffer.as_mut_slice();
         res.read_image(&mut buffer);
 
-
-        self.load_texture(id,  RGBAImage {
+        &self.load_texture(id,  RGBAImage {
             width:w,
             height:h,
             pixels:buffer

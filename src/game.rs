@@ -16,10 +16,14 @@ impl GameTrait for Game {
                 log("Game initialized");
                 let state = context.states.current_mut();
                 let mut assets = &mut context.assets;
-                assets.load_texture_from_png_bytes("sheet01".into(), 
-                include_bytes!("./assets/textures/spritesheet.png"));
+                let sheet01 = assets.load_texture_from_png_bytes("sheet01".into(), include_bytes!("./assets/textures/spritesheet.png"));
+                
+                let frames = [sheet01.frame(0, 0, 16, 16)];
                 assets.load_spritesheet("sheet01".into(), 
-                SpriteSheet::new("sheet01".into()));
+                SpriteSheet {
+                    texture:"sheet01".into(),
+                    frames:frames.into()
+                });
                 
                 let t1 = state.new_entity();
                 let t2 = state.new_entity();

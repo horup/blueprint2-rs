@@ -32,7 +32,6 @@ impl Assets {
                     let src_format = glow::RGBA;
                     let src_type = glow::UNSIGNED_BYTE;
                     let pixels = Some(img.pixels.as_slice());
-                    //let bytes = [255,0,255,255, 255,255,0,255, 255,255,255,255, 255,255,255,255];
                     gl.tex_image_2d(glow::TEXTURE_2D, level, internal_format, 
                         width, height, border, src_format, src_type, pixels);
 
@@ -47,9 +46,9 @@ impl Assets {
 }
 
 impl AssetsTrait for Assets {
-    fn load_texture(&mut self, id:HashId, image:RGBAImage) -> HashId {
+    fn load_texture(&mut self, id:HashId, image:RGBAImage) -> &RGBAImage {
         self.textures.insert(id, (image, TextureKey::default()));
-        id
+        &self.textures.get(&id).unwrap().0
     }
     fn load_spritesheet(&mut self, id:HashId, spritesheet:SpriteSheet) -> HashId {
         self.spritesheets.insert(id, spritesheet);
