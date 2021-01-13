@@ -87,10 +87,10 @@ impl<T:Game> Engine<T> {
     }
 
     pub unsafe fn draw_sprites(&mut self) {
-        //let textures_in_use= self.states.current_mut().entities.iter().map(|(_, thing)| thing.sprite.texture).unique().collect_vec();
+        let textures_in_use= self.states.current_mut().entities.iter().map(|(index, thing)| thing.sprite.texture).unique().collect_vec();
         
         // ensure a sprite_mesh exist for all textures in use
-     /*   for texture in &textures_in_use {
+        for texture in &textures_in_use {
             if self.sprite_meshes.contains_key(texture) == false {
                 self.sprite_meshes.insert(*texture, SpriteMesh::new(&self.gl, 1024));
             }
@@ -112,7 +112,7 @@ impl<T:Game> Engine<T> {
         for sprite_mesh in self.sprite_meshes.values_mut() {
             sprite_mesh.update(&self.gl);
             sprite_mesh.draw(&self.gl);
-        }*/
+        }
     }
     
     pub fn draw(&mut self, alpha:f64) {

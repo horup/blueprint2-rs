@@ -1,3 +1,5 @@
+use std::{collections, slice::Iter, vec::IntoIter};
+
 
 #[derive(Debug, Copy, Clone, PartialOrd, PartialEq, Eq)]
 pub struct Index {
@@ -13,7 +15,6 @@ impl Index {
         }
     }
 }
-
 
 #[derive(Copy, Clone)]
 struct Slot<T> {
@@ -81,6 +82,13 @@ impl<T> Arena<T> {
         );
     }
 
+    pub fn iter(&self) -> ArenaIntoIter<T> {
+        let iter = self.vec.iter();
+        ArenaIntoIter {
+            iter:iter
+        }
+    }
+
     /// Sets the `value` into the arena at the given `index` including the generation!
     /// Note: Will overwrite existing value occupinging `index.index` in the underlying arena!!!
     pub fn set(&mut self, index:&Index, value:T) {
@@ -137,3 +145,48 @@ impl<T> Arena<T> {
     }
 }
 
+pub struct ArenaIntoIter<'a, T> {
+    iter:Iter<'a, Slot<T>>
+}
+
+impl<'a, T> Iterator for ArenaIntoIter<'a, T> {
+    type Item = (Index, &'a T);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        while let Some(next) = self.iter.next() {
+            if let Some(value) = &next.value {
+                return Some((next.index, value));
+            }
+        }
+
+        None
+    }
+}
+/*
+impl<'a, T:'a> IntoIterator for Arena<T> {
+    type Item = T;
+    type IntoIter = ArenaIntoIter<'a, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        todo!()
+    }
+}*/
+/*
+impl<T> Iterator for IntoArenaIter<T> {
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        todo!()
+    }
+}*/
+
+/*
+impl<T> IntoIterator for Arena<T> {
+    type Item = T;
+
+    type IntoIter = ();
+
+    fn into_iter(self) -> Self::IntoIter {
+        todo!()
+    }
+}*/
