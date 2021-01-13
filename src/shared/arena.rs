@@ -1,4 +1,4 @@
-use std::{collections, slice::Iter, vec::IntoIter};
+use std::{collections, slice::{Iter, IterMut}, vec::IntoIter};
 
 
 #[derive(Debug, Copy, Clone, PartialOrd, PartialEq, Eq)]
@@ -89,6 +89,13 @@ impl<T> Arena<T> {
         }
     }
 
+    pub fn iter_mut(&mut self) -> ArenaIntoIterMut<T> {
+        let iter = self.vec.iter_mut();
+        ArenaIntoIterMut {
+            iter:iter
+        }
+    }
+
     /// Sets the `value` into the arena at the given `index` including the generation!
     /// Note: Will overwrite existing value occupinging `index.index` in the underlying arena!!!
     pub fn set(&mut self, index:&Index, value:T) {
@@ -149,12 +156,31 @@ pub struct ArenaIntoIter<'a, T> {
     iter:Iter<'a, Slot<T>>
 }
 
+pub struct ArenaIntoIterMut<'a, T> {
+    iter:IterMut<'a, Slot<T>>
+}
+
 impl<'a, T> Iterator for ArenaIntoIter<'a, T> {
     type Item = (Index, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
         while let Some(next) = self.iter.next() {
             if let Some(value) = &next.value {
+                return Some((next.index, value));
+            }
+        }
+
+        None
+    }
+}
+
+
+impl<'a, T> Iterator for ArenaIntoIterMut<'a, T> {
+    type Item = (Index, &'a mut T);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        while let Some(next) = self.iter.next() {
+            if let Some(value) = &mut next.value {
                 return Some((next.index, value));
             }
         }
