@@ -149,6 +149,10 @@ impl<T:ArenaItem> Arena<T> {
         self.vec.capacity()
     }
 
+    pub fn contains(&self, index:&Index) -> bool {
+        self.get(index).is_some()
+    }
+
     /// Inserts a new value into the arena, returning the Index
     /// Finds a empty slot in the `Arena`
     /// Will allocate storage if no slot was found
@@ -186,12 +190,12 @@ pub struct ArenaIntoIterMut<'a, T> {
 }
 
 impl<'a, T> Iterator for ArenaIntoIter<'a, T> {
-    type Item = (Index, &'a T);
+    type Item =  &'a T;
 
     fn next(&mut self) -> Option<Self::Item> {
         while let Some(next) = self.iter.next() {
             if let Some(value) = &next.value {
-                return Some((next.index, value));
+                return Some(value);
             }
         }
 
@@ -200,12 +204,12 @@ impl<'a, T> Iterator for ArenaIntoIter<'a, T> {
 }
 
 impl<'a, T> Iterator for ArenaIntoIterMut<'a, T> {
-    type Item = (Index, &'a mut T);
+    type Item = &'a mut T;
 
     fn next(&mut self) -> Option<Self::Item> {
         while let Some(next) = self.iter.next() {
             if let Some(value) = &mut next.value {
-                return Some((next.index, value));
+                return Some(value);
             }
         }
 
