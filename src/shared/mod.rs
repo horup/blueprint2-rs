@@ -27,3 +27,6 @@ pub use hashid::*;
 
 mod assets;
 pub use assets::*;
+
+mod arena;
+pub use arena::*;
