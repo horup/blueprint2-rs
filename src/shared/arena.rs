@@ -68,6 +68,32 @@ impl<T:Copy> Arena<T> {
         None
     }
 
+    pub fn resize_default(&mut self, new_size:usize) {
+        let mut next_index = self.vec.len();
+        self.vec.resize_with(new_size, || {
+            Slot {
+                index:Index {
+                    index:next_index as u16,
+                    generation:0
+                },
+                value:None
+                }
+            }
+        );
+    }
+
+    /// Sets the `value` into the arena at the given `index` including the generation!
+    /// Note: Will overwrite existing value occupinging `index.index` in the underlying arena!!!
+    pub fn set(&mut self, index:&Index, value:T) {
+        if (index.index as usize) < self.capacity() {
+            self.resize_default(index.index as usize + 1);
+        }
+
+        let slot = self.vec.get_mut(index.index as usize).expect("slot was not returned!");
+        slot.index = *index;
+        slot.value = Some(value);
+    }
+
     pub fn clear(&mut self) {
         self.vec.clear();
     }
