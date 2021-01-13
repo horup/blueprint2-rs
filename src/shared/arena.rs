@@ -174,7 +174,6 @@ impl<'a, T> Iterator for ArenaIntoIter<'a, T> {
     }
 }
 
-
 impl<'a, T> Iterator for ArenaIntoIterMut<'a, T> {
     type Item = (Index, &'a mut T);
 
@@ -188,31 +187,3 @@ impl<'a, T> Iterator for ArenaIntoIterMut<'a, T> {
         None
     }
 }
-/*
-impl<'a, T:'a> IntoIterator for Arena<T> {
-    type Item = T;
-    type IntoIter = ArenaIntoIter<'a, T>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        todo!()
-    }
-}*/
-/*
-impl<T> Iterator for IntoArenaIter<T> {
-    type Item = T;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        todo!()
-    }
-}*/
-
-/*
-impl<T> IntoIterator for Arena<T> {
-    type Item = T;
-
-    type IntoIter = ();
-
-    fn into_iter(self) -> Self::IntoIter {
-        todo!()
-    }
-}*/
