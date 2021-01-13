@@ -1,4 +1,4 @@
-use std::{collections, slice::{Iter, IterMut}, vec::IntoIter};
+use std::{collections, default, slice::{Iter, IterMut}, vec::IntoIter};
 
 
 #[derive(Debug, Copy, Clone, PartialOrd, PartialEq, Eq)]
@@ -14,6 +14,23 @@ impl Index {
             generation:0
         }
     }
+
+    pub fn invalid() -> Self {
+        Self {
+            index:u16::MAX,
+            generation:u16::MAX
+        }
+    }
+
+    pub fn is_valid(&self) -> bool {
+        return *self != Self::invalid();
+    }
+}
+
+impl Default for Index {
+    fn default() -> Self {
+        return Self::invalid()
+    }
 }
 
 #[derive(Copy, Clone)]
@@ -22,12 +39,19 @@ struct Slot<T> {
     pub value:Option<T>
 }
 
+
+pub trait ArenaItem {
+    fn with_index(self, index:Index) -> Self;
+    fn index(&self) -> Index;
+}
+
+
 #[derive(Clone, Default)]
-pub struct Arena<T> {
+pub struct Arena<T:ArenaItem> {
     vec:Vec<Slot<T>>
 }
 
-impl<T> Arena<T> {
+impl<T:ArenaItem> Arena<T> {
     pub fn new() -> Self {
         Self {
             vec:Vec::new()
@@ -105,7 +129,7 @@ impl<T> Arena<T> {
 
         let slot = self.vec.get_mut(index.index as usize).expect("slot was not returned!");
         slot.index = *index;
-        slot.value = Some(value);
+        slot.value = Some(value.with_index(slot.index));
     }
 
     pub fn clear(&mut self) {
@@ -145,10 +169,11 @@ impl<T> Arena<T> {
             });
 
             self.vec.reserve(1024);
-            self.vec.push(Slot {index:free.unwrap(), value:Some(value)});
+            self.vec.push(Slot {index:free.unwrap(), value:Some(value.with_index(free.unwrap()))});
+            return free.unwrap();
         }
 
-        free.unwrap()
+        free.expect("failed to insert value")
     }
 }
 

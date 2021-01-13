@@ -1,14 +1,28 @@
 use glow::{Context, HasContext, WebBufferKey, WebVertexArrayKey};
 use web_sys::WebGlVertexArrayObject;
 
-use crate::shared::log;
+use crate::shared::{ArenaItem, Index, log};
 
 use super::Vertex;
 
 pub struct Mesh {
+    index:Index,
     pub vertices:Vec<Vertex>,
     pub vertex_buffer_object:WebBufferKey,
     pub vertex_array_object:WebVertexArrayKey
+}
+
+impl ArenaItem for Mesh {
+    fn with_index(self, index:Index) -> Self {
+        Self {
+            index:index,
+            ..self
+        }
+    }
+
+    fn index(&self) -> crate::shared::Index {
+        self.index
+    }
 }
 
 impl Mesh {
@@ -41,6 +55,7 @@ impl Mesh {
         gl.enable_vertex_attrib_array(1);
 
         let mut mesh = Self { 
+            index:Index::default(),
             vertices:vertices.to_vec(),
             vertex_array_object,
             vertex_buffer_object
@@ -54,8 +69,6 @@ impl Mesh {
     pub unsafe fn update(&self, gl:&Context) {
         let buffer = std::slice::from_raw_parts(self.vertices.as_ptr() as *const u8, self.vertices.len() * std::mem::size_of::<Vertex>());
         let buffer = buffer.align_to().1;        
-        //log(&format!("{:?}", buffer));
-
         gl.bind_buffer(glow::ARRAY_BUFFER, Some(self.vertex_buffer_object));
         gl.buffer_data_u8_slice(glow::ARRAY_BUFFER, &buffer, glow::DYNAMIC_DRAW);
     }
