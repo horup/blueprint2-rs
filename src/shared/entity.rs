@@ -1,4 +1,3 @@
-use generational_arena::Index;
 use nalgebra::Vector3;
 
 use super::{Game, Sprite};

@@ -1,10 +1,9 @@
 use std::collections::HashMap;
 
-use generational_arena::Arena;
 use itertools::Itertools;
 use nalgebra::Vector3;
 
-use crate::{shared::{self, Context as SharedContext, Event, Game, HashId, State, States, log}};
+use crate::{shared::{self, Arena, Context as SharedContext, Event, Game, HashId, State, States, log}};
 
 use glow::*;
 
@@ -88,10 +87,10 @@ impl<T:Game> Engine<T> {
     }
 
     pub unsafe fn draw_sprites(&mut self) {
-        let textures_in_use= self.states.current_mut().entities.iter().map(|(_, thing)| thing.sprite.texture).unique().collect_vec();
+        //let textures_in_use= self.states.current_mut().entities.iter().map(|(_, thing)| thing.sprite.texture).unique().collect_vec();
         
         // ensure a sprite_mesh exist for all textures in use
-        for texture in &textures_in_use {
+     /*   for texture in &textures_in_use {
             if self.sprite_meshes.contains_key(texture) == false {
                 self.sprite_meshes.insert(*texture, SpriteMesh::new(&self.gl, 1024));
             }
@@ -113,7 +112,7 @@ impl<T:Game> Engine<T> {
         for sprite_mesh in self.sprite_meshes.values_mut() {
             sprite_mesh.update(&self.gl);
             sprite_mesh.draw(&self.gl);
-        }
+        }*/
     }
     
     pub fn draw(&mut self, alpha:f64) {
@@ -125,9 +124,9 @@ impl<T:Game> Engine<T> {
             self.gl.clear_color(0.1, 0.2, 0.3, 1.0);
             self.gl.clear(glow::COLOR_BUFFER_BIT);
             self.draw_sprites();
-            for (_, mesh) in &self.meshes {
+          /*  for (_, mesh) in &self.meshes {
                 mesh.draw(&self.gl);
-            }
+            }*/
         }
     }
 

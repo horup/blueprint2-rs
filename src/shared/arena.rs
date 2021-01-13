@@ -1,5 +1,3 @@
-use std::todo;
-
 
 #[derive(Debug, Copy, Clone, PartialOrd, PartialEq, Eq)]
 pub struct Index {
@@ -18,16 +16,17 @@ impl Index {
 
 
 #[derive(Copy, Clone)]
-struct Slot<T:Copy> {
+struct Slot<T> {
     pub index:Index,
     pub value:Option<T>
 }
 
-pub struct Arena<T:Copy> {
+#[derive(Clone, Default)]
+pub struct Arena<T> {
     vec:Vec<Slot<T>>
 }
 
-impl<T:Copy> Arena<T> {
+impl<T> Arena<T> {
     pub fn new() -> Self {
         Self {
             vec:Vec::new()

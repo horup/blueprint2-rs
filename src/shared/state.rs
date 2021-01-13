@@ -1,8 +1,6 @@
 use std::collections::VecDeque;
 
-use generational_arena::{Arena, IterMut};
-
-use super::{Entity, Game};
+use super::{Arena, Entity, Game};
 
 #[derive(Clone, Default)]
 pub struct State<T:Game> {
@@ -13,7 +11,7 @@ pub struct State<T:Game> {
 impl<T:Game> State<T> {
     pub fn new_entity(&mut self) -> &mut Entity<T> {
         let id = self.entities.insert(Entity::default());
-        let mut thing = self.entities.get_mut(id).unwrap();
+        let mut thing = self.entities.get_mut(&id).unwrap();
         thing
     }
 }
