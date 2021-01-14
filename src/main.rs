@@ -38,7 +38,7 @@ pub fn start() {
     );
 
     // TODO: put state here instead of contained in game or engine
-    let mut engine:Engine<Game> = Engine::new(gl);
+    let mut engine:Engine<BlueprintGame> = Engine::new(gl);
 
     render_loop.run(move |running| { 
         engine.width = canvas.width() as i32;

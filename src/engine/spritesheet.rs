@@ -1,6 +1,6 @@
 use std::default;
 
-use super::HashId;
+use crate::shared::HashId;
 
 #[derive(Clone, Copy, PartialEq)]
 pub struct Frame {

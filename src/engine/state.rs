@@ -1,6 +1,8 @@
 use std::collections::VecDeque;
 
-use super::{Arena, Entity, Game};
+use crate::shared::Arena;
+
+use super::{Entity, game::Game};
 
 #[derive(Clone, Default)]
 pub struct State<T:Game> {

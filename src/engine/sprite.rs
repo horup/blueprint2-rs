@@ -1,4 +1,5 @@
-use super::{HashId};
+use crate::shared::HashId;
+
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
 /// An object which encapsulates the state of a sprite.

@@ -3,11 +3,13 @@ use std::collections::HashMap;
 use itertools::Itertools;
 use nalgebra::Vector3;
 
-use crate::{shared::{self, Arena, Context as SharedContext, Event, Game, HashId, State, States, log}};
+use crate::{shared::{self, Arena, HashId, log}};
 
 use glow::*;
 
-use super::{Assets, Mesh, SpriteMesh};
+use crate::engine::{Context as SharedContext};
+
+use super::{Assets, Event, Mesh, SpriteMesh, States, game::Game};
 // TODO: use RC for glow::Context
 pub struct Engine<T:Game> {
     pub assets:Assets,

@@ -1,6 +1,7 @@
 use std::hash::Hash;
 
-use super::{Context, Event};
+use super::Context;
+
 pub trait Game : Default {
     type GameEntity : Default + Copy + Clone + Eq + PartialEq + Hash;
     type GameEvent : Copy + Clone + Eq + PartialEq + Hash;

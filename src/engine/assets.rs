@@ -1,10 +1,8 @@
-use std::{collections::HashMap};
-
-use crate::shared::{HashId, RGBAImage, SpriteSheet, log};
-use crate::shared::{Assets as AssetsTrait};
-
+use std::{collections::HashMap, io::Cursor};
 use glow::*;
-
+use image::ImageDecoder;
+use crate::shared::{HashId, log};
+use super::{RGBAImage, SpriteSheet};
 type TextureKey = WebTextureKey;
 
 #[derive(Default)]
@@ -15,7 +13,6 @@ pub struct Assets  {
 
 impl Assets {
     pub fn update(&mut self, gl:&glow::Context) {
-
         for (id, (img, tex_id)) in self.textures.iter_mut() {
             if *tex_id == TextureKey::default() {
                 unsafe {
@@ -43,14 +40,28 @@ impl Assets {
         }
         
     }
-}
 
-impl AssetsTrait for Assets {
-    fn load_texture(&mut self, id:HashId, image:RGBAImage) -> &RGBAImage {
+    pub fn load_texture_from_png_bytes(&mut self, id:HashId, bytes:&[u8]) -> &RGBAImage {
+        let cursor = Cursor::new(bytes);
+        let res = image::png::PngDecoder::new(cursor).expect("image was not of png");
+        let (w, h) = res.dimensions();
+        let mut buffer = vec![0; res.total_bytes() as usize];
+        buffer.as_mut_slice();
+        res.read_image(&mut buffer);
+
+        &self.load_texture(id,  RGBAImage {
+            width:w,
+            height:h,
+            pixels:buffer
+        }.flip())
+    }
+
+    pub fn load_texture(&mut self, id:HashId, image:RGBAImage) -> &RGBAImage {
         self.textures.insert(id, (image, TextureKey::default()));
         &self.textures.get(&id).unwrap().0
     }
-    fn load_spritesheet(&mut self, id:HashId, spritesheet:SpriteSheet) -> HashId {
+    
+    pub fn load_spritesheet(&mut self, id:HashId, spritesheet:SpriteSheet) -> HashId {
         self.spritesheets.insert(id, spritesheet);
         id
     }

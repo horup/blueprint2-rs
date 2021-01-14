@@ -1,12 +1,14 @@
 use image::DynamicImage;
 
-use crate::{shared::{Context, Event, Game as GameTrait, HashId, SpriteSheet, log}};
+pub use crate::engine::*;
+use crate::shared::log;
+
 #[derive(Default)]
-pub struct Game {
+pub struct BlueprintGame {
 
 }
 
-impl GameTrait for Game {
+impl Game for BlueprintGame {
     type GameEntity =  ();
     type GameEvent = ();
 
@@ -42,7 +44,7 @@ impl GameTrait for Game {
     }
 }
 
-impl Game {
+impl BlueprintGame {
     pub fn new() -> Self {
         Self {
             

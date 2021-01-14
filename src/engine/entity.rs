@@ -1,6 +1,7 @@
 use nalgebra::Vector3;
 
-use super::{ArenaItem, Game, Index, Sprite};
+use crate::{shared::{ArenaItem, Index}};
+use super::{Sprite, game::Game};
 
 #[derive(Clone, Copy, PartialEq, Default)]
 pub struct Entity<T:Game> {
@@ -18,7 +19,7 @@ impl<T:Game> ArenaItem for Entity<T> {
         }
     }
 
-    fn index(&self) -> super::Index {
+    fn index(&self) -> Index {
         self.index
     }
 }
