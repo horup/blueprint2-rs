@@ -16,8 +16,8 @@ pub use assets::*;
 mod entity;
 pub use entity::*;
 
-mod state;
-pub use state::*;
+mod state_old;
+pub use state_old::*;
 
 mod rgbaimage;
 pub use rgbaimage::*;
@@ -36,3 +36,6 @@ pub use event::*;
 
 mod sprite;
 pub use sprite::*;
+
+mod state;
+//pub use state::*;
