@@ -7,7 +7,7 @@ use nalgebra::Vector3;
 
 /// An object which maintains a single mesh consisting of one or more sprites
 pub struct SpriteMesh {
-    index:Index,
+    index:Index<Self>,
     /// The mesh which holds the raw vertex data
     mesh:Mesh,
     /// Max number of sprites, sprites exceeding this number will not be drawn
@@ -17,14 +17,14 @@ pub struct SpriteMesh {
 }
 
 impl ArenaItem for SpriteMesh {
-    fn with_index(self, index:Index) -> Self {
+    fn with_index(self, index:Index<Self>) -> Self {
         Self {
             index:index,
             ..self
         }
     }
 
-    fn index(&self) -> Index {
+    fn index(&self) -> Index<Self> {
         self.index
     }
 }

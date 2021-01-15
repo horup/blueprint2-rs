@@ -6,21 +6,21 @@ use crate::shared::{ArenaItem, Index, log};
 use super::Vertex;
 
 pub struct Mesh {
-    index:Index,
+    index:Index<Self>,
     pub vertices:Vec<Vertex>,
     pub vertex_buffer_object:WebBufferKey,
     pub vertex_array_object:WebVertexArrayKey
 }
 
 impl ArenaItem for Mesh {
-    fn with_index(self, index:Index) -> Self {
+    fn with_index(self, index:Index<Self>) -> Self {
         Self {
             index:index,
             ..self
         }
     }
 
-    fn index(&self) -> crate::shared::Index {
+    fn index(&self) -> Index<Self> {
         self.index
     }
 }
