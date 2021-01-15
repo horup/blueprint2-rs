@@ -1,28 +1,13 @@
 use std::collections::VecDeque;
 
-use crate::shared::Arena;
+use crate::game::Game;
+use super::State;
 
-use super::{Entity, gameold::GameOld};
-
-#[derive(Clone, Default)]
-pub struct State<T:GameOld> {
-    pub entities:Arena<Entity<T>>,
-    pub time:f64
-}
-
-impl<T:GameOld> State<T> {
-    pub fn new_entity(&mut self) -> &mut Entity<T> {
-        let id = self.entities.insert(Entity::default());
-        let mut thing = self.entities.get_mut(&id).unwrap();
-        thing
-    }
-}
-
-pub struct States<T:GameOld> {
+pub struct States<T:Game> {
     pub states:VecDeque<State<T>>
 }
 
-impl<T:GameOld> Default for States<T> {
+impl<T:Game> Default for States<T> {
     fn default() -> Self {
         let mut states = VecDeque::new();
         states.push_front(State::default());
@@ -33,7 +18,7 @@ impl<T:GameOld> Default for States<T> {
     }
 }
 
-impl<T:GameOld> States<T> {
+impl<T:Game> States<T> {
     pub fn current_mut(&mut self) -> &mut State<T> {
         self.states.get_mut(0).expect("No current state!")
     }

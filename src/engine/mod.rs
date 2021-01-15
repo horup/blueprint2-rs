@@ -25,8 +25,8 @@ pub use rgbaimage::*;
 mod spritesheet;
 pub use spritesheet::*;
 
-mod game;
-pub use game::*;
+mod gameold;
+pub use gameold::*;
 
 mod context;
 pub use context::Context;
@@ -38,4 +38,7 @@ mod sprite;
 pub use sprite::*;
 
 mod state;
-//pub use state::*;
+pub use state::*;
+
+mod game;
+pub use game::*;

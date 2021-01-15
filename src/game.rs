@@ -8,7 +8,7 @@ pub struct BlueprintGame {
 
 }
 
-impl Game for BlueprintGame {
+impl GameOld for BlueprintGame {
     type GameEntity =  ();
     type GameEvent = ();
 
