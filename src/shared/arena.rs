@@ -55,6 +55,7 @@ impl<T> Default for Index<T> {
     }
 }
 
+
 #[derive(Copy, Clone)]
 struct Slot<T> {
     pub index:Index<T>,
