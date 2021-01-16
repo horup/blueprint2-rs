@@ -1,29 +1,16 @@
 use glow::{Context, HasContext, WebBufferKey, WebVertexArrayKey};
 use web_sys::WebGlVertexArrayObject;
 
-use crate::shared::{ArenaItem, Index, log};
+use crate::shared::{log};
 
 use super::Vertex;
 
 pub struct Mesh {
-    index:Index<Self>,
     pub vertices:Vec<Vertex>,
     pub vertex_buffer_object:WebBufferKey,
     pub vertex_array_object:WebVertexArrayKey
 }
 
-impl ArenaItem for Mesh {
-    fn with_index(self, index:Index<Self>) -> Self {
-        Self {
-            index:index,
-            ..self
-        }
-    }
-
-    fn index(&self) -> Index<Self> {
-        self.index
-    }
-}
 
 impl Mesh {
     pub unsafe fn new_quads(gl:&Context, count:usize) -> Self {
@@ -55,7 +42,6 @@ impl Mesh {
         gl.enable_vertex_attrib_array(1);
 
         let mut mesh = Self { 
-            index:Index::default(),
             vertices:vertices.to_vec(),
             vertex_array_object,
             vertex_buffer_object

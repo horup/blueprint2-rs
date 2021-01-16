@@ -1,32 +1,16 @@
 use glow::Context;
-use crate::shared::{ArenaItem, Index};
-
 use super::{Mesh, Vertex};
 use nalgebra::Vector3;
 
 
 /// An object which maintains a single mesh consisting of one or more sprites
 pub struct SpriteMesh {
-    index:Index<Self>,
     /// The mesh which holds the raw vertex data
     mesh:Mesh,
     /// Max number of sprites, sprites exceeding this number will not be drawn
     pub max_sprites:usize,
     /// Number of sprites to draw
     pub count:usize
-}
-
-impl ArenaItem for SpriteMesh {
-    fn with_index(self, index:Index<Self>) -> Self {
-        Self {
-            index:index,
-            ..self
-        }
-    }
-
-    fn index(&self) -> Index<Self> {
-        self.index
-    }
 }
 
 impl SpriteMesh {
@@ -40,8 +24,7 @@ impl SpriteMesh {
         Self {
             max_sprites:max_sprites,
             mesh:mesh,
-            count:0,
-            index:Index::default()
+            count:0
         }
     }
 

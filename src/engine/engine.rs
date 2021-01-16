@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use itertools::Itertools;
 use nalgebra::Vector3;
 
-use crate::{shared::{self, Arena, HashId, log}};
+use crate::{shared::{self, HashId, log}};
 
 use glow::*;
 
@@ -18,7 +18,6 @@ pub struct Engine<T:Game> {
     pub width:i32,
     pub height:i32,
     pub game:T,
-    meshes:Arena<Mesh>,
     tick_rate:u32,
     sprite_meshes:HashMap<HashId, SpriteMesh>,
     initialized:bool,
@@ -36,7 +35,6 @@ impl<T:Game> Engine<T> {
             game:T::default(),
             width:0,
             height:0,
-            meshes:Arena::new(),
             sprite_meshes:HashMap::new(),
             initialized:false,
             accumulator:0.0,
