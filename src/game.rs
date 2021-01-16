@@ -8,9 +8,8 @@ pub struct BlueprintGame {
 
 }
 
-impl GameOld for BlueprintGame {
-    type GameEntity =  ();
-    type GameEvent = ();
+impl Game for BlueprintGame {
+    type GameComponent1 = ();
 
     fn update(&mut self, context:&mut Context<Self>) {
         match context.event {
@@ -27,10 +26,10 @@ impl GameOld for BlueprintGame {
                     frames:frames.into()
                 });
                 
-                let t1 = state.new_entity();
+                /*let t1 = state.new_entity();
                 let t2 = state.new_entity();
                 t2.pos.x = 0.5;
-                t2.pos.y = 0.5;
+                t2.pos.y = 0.5;*/
             }
             Event::FixedStep(time, dt) => {
                /* for (_, t) in context.current.entities.iter_mut() {
@@ -42,6 +41,7 @@ impl GameOld for BlueprintGame {
             }
         }
     }
+
 }
 
 impl BlueprintGame {

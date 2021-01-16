@@ -9,9 +9,9 @@ use glow::*;
 
 use crate::engine::{Context as SharedContext};
 
-use super::{Assets, Event, Mesh, SpriteMesh, States, gameold::GameOld};
+use super::{Assets, Event, Game, Mesh, SpriteMesh, States};
 // TODO: use RC for glow::Context
-pub struct Engine<T:GameOld> {
+pub struct Engine<T:Game> {
     pub assets:Assets,
     pub states:States<T>,
     gl:glow::Context,
@@ -27,7 +27,7 @@ pub struct Engine<T:GameOld> {
     t:f64
 }
 
-impl<T:GameOld> Engine<T> {
+impl<T:Game> Engine<T> {
     pub fn new(gl:glow::Context) -> Self {
         Self {
             tick_rate:20,
