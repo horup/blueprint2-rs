@@ -1,4 +1,5 @@
 use image::DynamicImage;
+use nalgebra::Vector3;
 
 pub use crate::engine::*;
 use crate::shared::log;
@@ -15,7 +16,7 @@ impl Game for BlueprintGame {
         match context.event {
             Event::Initialize => {
                 log("Game initialized");
-                let state = context.states.current_mut();
+                let current = context.states.current_mut();
                 let mut assets = &mut context.assets;
                 let sheet01 = assets.load_texture_from_png_bytes("sheet01".into(), include_bytes!("./assets/textures/spritesheet.png"));
                 
@@ -25,6 +26,17 @@ impl Game for BlueprintGame {
                     texture:"sheet01".into(),
                     frames:frames.into()
                 });
+
+                current.entities.spawn((
+                    Transform { position:Vector3::new(0.0, 0.0, 0.0)},
+                    Sprite::default()
+                ));
+
+                current.entities.spawn((
+                    Transform { position:Vector3::new(0.5, 0.5, 0.0)},
+                    Sprite::default()
+                ));
+
                 
                 /*let t1 = state.new_entity();
                 let t2 = state.new_entity();
