@@ -25,9 +25,6 @@ pub use context::Context;
 mod event;
 pub use event::*;
 
-mod sprite;
-pub use sprite::*;
-
 mod game;
 pub use game::*;
 

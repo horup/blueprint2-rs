@@ -37,11 +37,7 @@ impl Game for BlueprintGame {
                     Sprite::default()
                 ));
 
-                
-                /*let t1 = state.new_entity();
-                let t2 = state.new_entity();
-                t2.pos.x = 0.5;
-                t2.pos.y = 0.5;*/
+               
             }
             Event::FixedStep(time, dt) => {
                /* for (_, t) in context.current.entities.iter_mut() {
