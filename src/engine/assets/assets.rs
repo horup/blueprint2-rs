@@ -2,6 +2,7 @@ use std::{collections::HashMap, io::Cursor};
 use glow::*;
 use image::ImageDecoder;
 use crate::shared::{HashId, log};
+
 use super::{RGBAImage, SpriteSheet};
 type TextureKey = WebTextureKey;
 

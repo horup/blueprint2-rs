@@ -113,35 +113,6 @@ impl<T:Game> Engine<T> {
             sprite_mesh.update(&self.gl);
             sprite_mesh.draw(&self.gl);
         }
-
-        
-
-     /*   let textures_in_use= self.states.current_mut().entities.iter().map(|(index, thing)| thing.sprite.texture).unique().collect_vec();
-        
-        // ensure a sprite_mesh exist for all textures in use
-        for texture in &textures_in_use {
-            if self.sprite_meshes.contains_key(texture) == false {
-                self.sprite_meshes.insert(*texture, SpriteMesh::new(&self.gl, 1024));
-            }
-        }
-
-        // clear all sprite meshes to 0 sprites
-        for sprite_mesh in self.sprite_meshes.values_mut() {
-            sprite_mesh.clear();
-        }
-
-        // populate the sprite meshes with sprite data
-        for (_, thing) in self.states.current_mut().entities.iter() {
-            if let Some(sprite_mesh) = self.sprite_meshes.get_mut(&thing.sprite.texture) {
-                sprite_mesh.push_sprite(thing.pos);
-            }
-        }
-
-        // draw the sprite meshes one by one
-        for sprite_mesh in self.sprite_meshes.values_mut() {
-            sprite_mesh.update(&self.gl);
-            sprite_mesh.draw(&self.gl);
-        }*/
     }
     
     pub fn draw(&mut self, alpha:f64) {
