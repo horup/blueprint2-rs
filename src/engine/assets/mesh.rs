@@ -1,9 +1,8 @@
 use glow::{Context, HasContext, WebBufferKey, WebVertexArrayKey};
 use web_sys::WebGlVertexArrayObject;
 
-use crate::shared::{log};
-
-use super::Vertex;
+use crate::{shared::{log}};
+use crate::engine::Vertex;
 
 pub struct Mesh {
     pub vertices:Vec<Vertex>,

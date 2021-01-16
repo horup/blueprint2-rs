@@ -1,7 +1,9 @@
 use glow::Context;
-use super::{Mesh, Vertex};
 use nalgebra::Vector3;
 
+use crate::game::Vertex;
+
+use super::Mesh;
 
 /// An object which maintains a single mesh consisting of one or more sprites
 pub struct SpriteMesh {
