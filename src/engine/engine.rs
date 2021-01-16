@@ -9,7 +9,7 @@ use glow::*;
 
 use crate::engine::{Context as SharedContext};
 
-use super::{Assets, Event, Game, Mesh, SpriteMesh, States};
+use super::{Assets, Event, Game, Mesh, Sprite, SpriteMesh, States, Transform};
 // TODO: use RC for glow::Context
 pub struct Engine<T:Game> {
     pub assets:Assets,
@@ -87,10 +87,34 @@ impl<T:Game> Engine<T> {
     }
 
     pub unsafe fn draw_sprites(&mut self) {
-        let current_state = self.states.current();
-        for e in current_state.entities.iter() {
-
+        let current = self.states.current();
+        for e in current.entities.iter() {
+            
         }
+
+
+        for (entity, sprite) in current.entities.query::<&Sprite>().iter() {
+            if self.sprite_meshes.contains_key(&sprite.spritesheet) == false {
+                self.sprite_meshes.insert(sprite.spritesheet, SpriteMesh::new(&self.gl, 1024));
+            }
+        }
+
+        for sprite_mesh in self.sprite_meshes.values_mut() {
+            sprite_mesh.clear();
+        }
+
+        for (entity, (transform, sprite)) in current.entities.query::<(&Transform, &Sprite)>().iter() {
+            if let Some(sprite_mesh) = self.sprite_meshes.get_mut(&sprite.spritesheet) {
+                sprite_mesh.push_sprite(transform.position);
+            }
+        }
+
+        for sprite_mesh in self.sprite_meshes.values_mut() {
+            sprite_mesh.update(&self.gl);
+            sprite_mesh.draw(&self.gl);
+        }
+
+        
 
      /*   let textures_in_use= self.states.current_mut().entities.iter().map(|(index, thing)| thing.sprite.texture).unique().collect_vec();
         
