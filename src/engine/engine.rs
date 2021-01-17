@@ -130,7 +130,7 @@ impl<T:Game> Engine<T> {
         }
     }
 
-    fn update_game(&mut self, event:Event) {
+    fn update_game(&mut self, event:Event<T>) {
         let mut c = SharedContext {
            /* current:&mut self.current,
             previous:&mut self.previous,*/

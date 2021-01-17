@@ -10,6 +10,7 @@ pub struct BlueprintGame {
 }
 
 impl Game for BlueprintGame {
+    type GameEvent = ();
     type GameComponent1 = ();
 
     fn update(&mut self, context:&mut Context<Self>) {
@@ -47,6 +48,7 @@ impl Game for BlueprintGame {
             Event::Draw(_,_,_) => {
                
             }
+            Event::Game(_) => {}
         }
     }
 
