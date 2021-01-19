@@ -1,5 +1,4 @@
 use std::{collections::{HashMap, hash_map::{DefaultHasher, Iter, IterMut}}, default, hash::{Hash, Hasher}, marker::PhantomData, rc::Rc, todo};
-
 use super::Assets;
 
 pub struct AssetKey<T>(u64, PhantomData<T>);
@@ -50,19 +49,22 @@ impl<T> From<&str> for AssetKey<T> {
     }
 }
 
+
 pub struct AssetCollection<T> {
     hash_map:HashMap<AssetKey<T>, T>
 }
 
-impl<T> Default for AssetCollection<T> {
+impl<T:Default> Default for AssetCollection<T> {
     fn default() -> Self {
-        Self {
-            hash_map:HashMap::default()
-        }
+        let mut v = Self {
+            hash_map:HashMap::new()
+        };
+        v.insert("default".into(), T::default());
+        return v;
     }
 }
 
-impl<T> AssetCollection<T> {
+impl<T:Default> AssetCollection<T> {
     pub fn insert(&mut self, key:AssetKey<T>, asset:T) {
         self.hash_map.insert(key, asset);
     }
@@ -75,12 +77,23 @@ impl<T> AssetCollection<T> {
         self.hash_map.iter_mut()
     }
 
-    pub fn get(&self, key:&AssetKey<T>) -> Option<&T> {
-        self.hash_map.get(key)
+    pub fn get(&self, key:&AssetKey<T>) -> &T {
+        if self.hash_map.contains_key(key) {
+            return self.hash_map.get(key).unwrap();
+        }
+        else {
+            return self.hash_map.get(&"default".into()).unwrap();
+        }
     }
 
-    pub fn get_mut(&mut self, key:&AssetKey<T>) -> Option<&mut T> {
-        self.hash_map.get_mut(key)
+    pub fn get_mut(&mut self, key:&AssetKey<T>) -> &mut T {
+
+        if self.hash_map.contains_key(key) {
+            return self.hash_map.get_mut(key).unwrap();
+        }
+        else {
+            return self.hash_map.get_mut(&"default".into()).unwrap();
+        }
     }
 }
 

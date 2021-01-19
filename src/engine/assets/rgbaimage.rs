@@ -11,6 +11,17 @@ pub struct RGBAImage {
     pub texture:TextureKey
 }
 
+impl Default for RGBAImage {
+    fn default() -> Self {
+        Self {
+            height:2,
+            width:2,
+            pixels:[].into(),
+            texture:TextureKey::default()
+        }
+    }
+}
+
 impl RGBAImage {
     pub fn flip(self) -> Self
     {

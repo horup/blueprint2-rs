@@ -37,6 +37,15 @@ pub struct SpriteSheet {
     pub frames:Vec<Frame>
 }
 
+impl Default for SpriteSheet {
+    fn default() -> Self {
+        Self {
+            texture:HashId::default(),
+            frames:Vec::new()
+        }
+    }
+}
+
 impl SpriteSheet {
     /// Constructs a new `SpriteSheet` with a single frame spanning the whole `texture`
     pub fn new(texture:HashId) -> Self {

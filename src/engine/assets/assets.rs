@@ -65,7 +65,7 @@ impl Assets {
 
     pub fn load_texture(&mut self, id:AssetKey<RGBAImage>, image:RGBAImage) -> &RGBAImage {
         self.textures.insert(id, image);
-        &self.textures.get(&id).unwrap()
+        &self.textures.get(&id)
     }
     
     pub fn load_spritesheet(&mut self, id:AssetKey<SpriteSheet>, spritesheet:SpriteSheet) -> AssetKey<SpriteSheet> {
