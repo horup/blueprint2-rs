@@ -1,17 +1,24 @@
-use std::{collections::HashMap, io::Cursor};
+use std::{collections::HashMap,  io::Cursor, rc::Rc};
 use glow::*;
 use image::ImageDecoder;
 use crate::shared::{HashId, log};
 
 use super::{AssetCollection, AssetKey, RGBAImage, SpriteSheet, TextureKey};
 
-#[derive(Default)]
 pub struct Assets  {
     pub textures:AssetCollection<RGBAImage>,
-    pub spritesheets:AssetCollection<SpriteSheet>
+    pub spritesheets:AssetCollection<SpriteSheet>,
+    pub gl:Rc<glow::Context>
 }
 
 impl Assets {
+    pub fn new(gl:Rc<glow::Context>) -> Self {
+        Self {
+            gl:gl,
+            spritesheets:AssetCollection::default(),
+            textures:AssetCollection::default()
+        }
+    }
     pub fn update(&mut self, gl:&glow::Context) {
         for (id, img) in self.textures.iter_mut() {
             if img.texture == TextureKey::default() {

@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, rc::Rc};
 
 use itertools::Itertools;
 use nalgebra::Vector3;
@@ -14,7 +14,7 @@ use super::{AssetKey, Assets, Event, Game, Mesh, Sprite, SpriteMesh, SpriteSheet
 pub struct Engine<T:Game> {
     pub assets:Assets,
     pub states:States<T>,
-    gl:glow::Context,
+    gl:Rc<glow::Context>,
     pub width:i32,
     pub height:i32,
     pub game:T,
@@ -28,10 +28,11 @@ pub struct Engine<T:Game> {
 
 impl<T:Game> Engine<T> {
     pub fn new(gl:glow::Context) -> Self {
+        let gl = Rc::new(gl);
         Self {
             tick_rate:20,
             states:States::default(),
-            gl,
+            gl:gl.clone(),
             game:T::default(),
             width:0,
             height:0,
@@ -40,7 +41,7 @@ impl<T:Game> Engine<T> {
             accumulator:0.0,
             current_time:Self::now_as_secs(),
             t:0.0,
-            assets:Assets::default()
+            assets:Assets::new(gl.clone())
         }
     }
 
