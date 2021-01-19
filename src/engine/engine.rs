@@ -9,7 +9,7 @@ use glow::*;
 
 use crate::engine::{Context as SharedContext};
 
-use super::{Assets, Event, Game, Mesh, Sprite, SpriteMesh, States, Transform};
+use super::{AssetKey, Assets, Event, Game, Mesh, Sprite, SpriteMesh, SpriteSheet, States, Transform};
 // TODO: use RC for glow::Context
 pub struct Engine<T:Game> {
     pub assets:Assets,
@@ -19,7 +19,7 @@ pub struct Engine<T:Game> {
     pub height:i32,
     pub game:T,
     tick_rate:u32,
-    sprite_meshes:HashMap<HashId, SpriteMesh>,
+    sprite_meshes:HashMap<AssetKey<SpriteSheet>, SpriteMesh>,
     initialized:bool,
     current_time:f64,
     accumulator:f64,

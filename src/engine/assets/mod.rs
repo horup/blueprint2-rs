@@ -12,3 +12,7 @@ pub use mesh::*;
 
 mod spritemesh;
 pub use spritemesh::*;
+
+mod collection;
+pub use collection::*;
+

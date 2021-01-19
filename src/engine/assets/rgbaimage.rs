@@ -1,10 +1,14 @@
+use glow::WebTextureKey;
+
 use super::Frame;
+pub type TextureKey = WebTextureKey;
 
 
 pub struct RGBAImage {
     pub width:u32,
     pub height:u32,
-    pub pixels:Vec<u8>
+    pub pixels:Vec<u8>,
+    pub texture:TextureKey
 }
 
 impl RGBAImage {
@@ -41,7 +45,8 @@ impl RGBAImage {
         RGBAImage {
             width:self.width,
             height:self.height,
-            pixels:pixels
+            pixels:pixels,
+            texture:TextureKey::default()
         }
     }
 

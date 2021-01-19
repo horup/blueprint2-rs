@@ -37,7 +37,6 @@ pub fn start() {
         glow::RenderLoop::from_request_animation_frame()
     );
 
-    // TODO: put state here instead of contained in game or engine
     let mut engine:Engine<BlueprintGame> = Engine::new(gl);
 
     render_loop.run(move |running| { 

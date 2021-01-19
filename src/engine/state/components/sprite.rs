@@ -1,9 +1,9 @@
-use crate::shared::HashId;
+use crate::{game::{AssetKey, SpriteSheet}, shared::HashId};
 
 
 /// A component holding sprite information for an entity.
-#[derive(Debug, Clone, Copy, Default)]
+#[derive(Clone, Copy, Default)]
 pub struct Sprite {
-    pub spritesheet:HashId,
+    pub spritesheet:AssetKey<SpriteSheet>,
     pub frame:u16
 }
