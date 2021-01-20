@@ -30,7 +30,7 @@ impl Assets {
         
     }
 
-    pub fn load_texture_from_png_bytes(&mut self, id:AssetKey<RGBAImage>, bytes:&[u8]) -> &RGBAImage {
+    pub fn load_texture_from_png_bytes(&mut self, key:AssetKey<RGBAImage>, bytes:&[u8]) -> &RGBAImage {
         let cursor = Cursor::new(bytes);
         let res = image::png::PngDecoder::new(cursor).expect("image was not of png");
         let (w, h) = res.dimensions();
@@ -38,21 +38,19 @@ impl Assets {
         buffer.as_mut_slice();
         res.read_image(&mut buffer);
 
-        &self.load_texture(id,  RGBAImage {
+        let tex = RGBAImage {
             width:w,
             height:h,
             pixels:buffer,
             texture:TextureKey::default()
-        }.flip())
-    }
+        }.flip();
 
-    pub fn load_texture(&mut self, id:AssetKey<RGBAImage>, image:RGBAImage) -> &RGBAImage {
-        self.textures.insert(id, image);
-        &self.textures.get(&id)
+        self.textures.insert(key, tex);
+        self.textures.get(&key)
     }
     
-    pub fn load_spritesheet(&mut self, id:AssetKey<SpriteSheet>, spritesheet:SpriteSheet) -> AssetKey<SpriteSheet> {
-        self.spritesheets.insert(id, spritesheet);
-        id
+    pub fn load_spritesheet(&mut self, key:AssetKey<SpriteSheet>, spritesheet:SpriteSheet) -> AssetKey<SpriteSheet> {
+        self.spritesheets.insert(key, spritesheet);
+        key
     }
 }

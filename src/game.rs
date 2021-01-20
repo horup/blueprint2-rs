@@ -30,7 +30,10 @@ impl Game for BlueprintGame {
 
                 current.entities.spawn((
                     Transform { position:Vector3::new(0.0, 0.0, 0.0)},
-                    Sprite::default()
+                    Sprite {
+                        frame:0,
+                        spritesheet:"sheet01".into()
+                    }
                 ));
 
                 current.entities.spawn((

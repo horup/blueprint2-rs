@@ -96,7 +96,7 @@ impl<T:Game> Engine<T> {
 
         for (entity, sprite) in current.entities.query::<&Sprite>().iter() {
             if self.sprite_meshes.contains_key(&sprite.spritesheet) == false {
-                self.sprite_meshes.insert(sprite.spritesheet, SpriteMesh::new(&self.gl, 1024));
+                self.sprite_meshes.insert(sprite.spritesheet, SpriteMesh::new(&self.gl, 1024, sprite.spritesheet));
             }
         }
 
@@ -112,7 +112,7 @@ impl<T:Game> Engine<T> {
 
         for sprite_mesh in self.sprite_meshes.values_mut() {
             sprite_mesh.update(&self.gl);
-            sprite_mesh.draw(&self.gl);
+            sprite_mesh.draw(&self.gl, &self.assets);
         }
     }
     

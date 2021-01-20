@@ -18,3 +18,9 @@ pub use game::*;
 
 mod state;
 pub use state::*;
+
+mod mesh;
+pub use mesh::*;
+
+mod spritemesh;
+pub use spritemesh::*;
