@@ -4,6 +4,8 @@ use web_sys::WebGlVertexArrayObject;
 use crate::{shared::{log}};
 use crate::engine::Vertex;
 
+use super::TextureKey;
+
 pub struct Mesh {
     pub vertices:Vec<Vertex>,
     pub vertex_buffer_object:WebBufferKey,

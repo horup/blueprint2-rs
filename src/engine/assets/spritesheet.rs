@@ -2,6 +2,8 @@ use std::default;
 
 use crate::shared::HashId;
 
+use super::{AssetKey, RGBAImage};
+
 #[derive(Clone, Copy, PartialEq)]
 pub struct Frame {
     pub u:f32,
@@ -33,14 +35,14 @@ pub enum Animation {
 }*/
 
 pub struct SpriteSheet {
-    pub texture:HashId,
+    pub texture:AssetKey<RGBAImage>,
     pub frames:Vec<Frame>
 }
 
 impl Default for SpriteSheet {
     fn default() -> Self {
         Self {
-            texture:HashId::default(),
+            texture:AssetKey::default(),
             frames:Vec::new()
         }
     }
@@ -48,12 +50,12 @@ impl Default for SpriteSheet {
 
 impl SpriteSheet {
     /// Constructs a new `SpriteSheet` with a single frame spanning the whole `texture`
-    pub fn new(texture:HashId) -> Self {
+    pub fn new(texture:AssetKey<RGBAImage>,) -> Self {
         Self::new_1x1(texture, Frame::default())
     }
 
     /// Constructs a new `SpriteSheet` with a single `frame`
-    pub fn new_1x1(texture:HashId, frame:Frame) -> Self {
+    pub fn new_1x1(texture:AssetKey<RGBAImage>, frame:Frame) -> Self {
         Self {
             texture,
             frames:[frame].into()
