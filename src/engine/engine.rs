@@ -106,7 +106,7 @@ impl<T:Game> Engine<T> {
 
         for (entity, (transform, sprite)) in current.entities.query::<(&Transform, &Sprite)>().iter() {
             if let Some(sprite_mesh) = self.sprite_meshes.get_mut(&sprite.spritesheet) {
-                sprite_mesh.push_sprite(transform.position);
+                sprite_mesh.push_sprite(&self.assets, transform, sprite);
             }
         }
 

@@ -3,7 +3,7 @@ use nalgebra::Vector3;
 
 use crate::{game::Vertex, shared::log};
 
-use super::{AssetKey, Assets, Mesh, SpriteSheet};
+use super::{AssetKey, Assets, Mesh, Sprite, SpriteSheet, Transform};
 
 /// An object which maintains a single mesh consisting of one or more sprites
 pub struct SpriteMesh {
@@ -36,7 +36,6 @@ impl SpriteMesh {
     pub unsafe fn draw(&self, gl:&Context, assets:&Assets) {
         let sheet = assets.spritesheets.get(&self.sprite_sheet);
         let texture = assets.textures.get(&sheet.texture);
-        log(&format!("{}", texture.width));
         gl.bind_texture(glow::TEXTURE_2D, Some(texture.texture));
         self.mesh.draw_subset(gl, self.count * 6);
     }
@@ -48,24 +47,27 @@ impl SpriteMesh {
     /// Pushes a sprite to the mesh, which is drawn by calling `draw`
     /// does not allocate memory. 
     /// sprites above max_sprites are ignored and will not be drawn
-    pub fn push_sprite(&mut self, pos:Vector3<f32>) {
+    pub fn push_sprite(&mut self, assets:&Assets, transform:&Transform, sprite:&Sprite) {
         if self.count < self.max_sprites {
             let mesh = &mut self.mesh;
             let i = self.count * 6;
-            let p = pos;
+
+            let sprite_sheet = assets.spritesheets.get(&sprite.spritesheet);
+            let frame = sprite_sheet.get_frame(sprite.frame as usize);
             let mut vs = [
-                Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0),
-                Vertex::new(0.5, -0.5, 0.0, 1.0, 0.0),
-                Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0),
-                Vertex::new(-0.5, -0.5, 0.0, 0.0, 0.0),
-                Vertex::new(0.5, 0.5, 0.0, 1.0, 1.0),
-                Vertex::new(-0.5, 0.5, 0.0, 0.0, 1.0)];
+                Vertex::new(-0.5, -0.5, 0.0, frame.u, frame.v),
+                Vertex::new(0.5, -0.5, 0.0, frame.u + frame.w, frame.v),
+                Vertex::new(0.5, 0.5, 0.0, frame.u + frame.w, frame.v + frame.h),
+
+                Vertex::new(-0.5, -0.5, 0.0, frame.u, frame.v),
+                Vertex::new(0.5, 0.5, 0.0, frame.u + frame.w, frame.v + frame.h),
+                Vertex::new(-0.5, 0.5, 0.0, frame.u, frame.v + frame.h)];
 
             // translate
             for v in &mut vs {
-                v.x += p.x;
-                v.y += p.y;
-                v.z += p.y;
+                v.x += transform.position.x;
+                v.y += transform.position.y;
+                v.z += transform.position.z;
             }
 
             mesh.copy_from(&vs, self.count * 6);

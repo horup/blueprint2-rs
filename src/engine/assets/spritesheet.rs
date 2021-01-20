@@ -43,7 +43,7 @@ impl Default for SpriteSheet {
     fn default() -> Self {
         Self {
             texture:AssetKey::default(),
-            frames:Vec::new()
+            frames:[Frame {u:0.0, v:0.0, w:1.0, h:1.0}].into()
         }
     }
 }
@@ -60,5 +60,13 @@ impl SpriteSheet {
             texture,
             frames:[frame].into()
         }
+    }
+
+    pub fn get_frame(&self, index:usize) -> Frame {
+        if self.frames.len() == 0 {
+            return Frame {u:0.0, v:0.0, w:1.0, h:1.0};
+        }
+        
+        *self.frames.get(index % self.frames.len()).unwrap()
     }
 }

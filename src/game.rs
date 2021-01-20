@@ -21,7 +21,9 @@ impl Game for BlueprintGame {
                 let mut assets = &mut context.assets;
                 let sheet01 = assets.load_texture_from_png_bytes("sheet01".into(), include_bytes!("./assets/textures/spritesheet.png"));
                 
-                let frames = [sheet01.frame(0, 0, 16, 16)];
+                let frames = [
+                    sheet01.frame(0, 0, 16, 16), 
+                    sheet01.frame(0, 16, 16, 16)];
                 assets.load_spritesheet("sheet01".into(), 
                 SpriteSheet {
                     texture:"sheet01".into(),
@@ -45,7 +47,12 @@ impl Game for BlueprintGame {
             }
             Event::FixedStep(time, dt) => {
                 for (_, t) in current.entities.query_mut::<&mut Transform>() {
-                    t.position.x += 0.1 * dt as f32;
+                    //t.position.x += 0.1 * dt as f32;
+                }
+
+                for (_, s) in current.entities.query_mut::<&mut Sprite>() {
+                    //t.position.x += 0.1 * dt as f32;
+                    s.frame += 1;
                 }
             }
             Event::Draw(_,_,_) => {
