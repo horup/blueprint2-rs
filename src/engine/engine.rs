@@ -148,7 +148,7 @@ impl<T:Game> Engine<T> {
             self.initialized = true;
             self.setup_shaders();
             self.update_game(Event::Initialize);
-            self.assets.update(&mut self.gl);
+            self.assets.update();
             self.update();
 
             return;

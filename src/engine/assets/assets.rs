@@ -19,29 +19,12 @@ impl Assets {
             textures:AssetCollection::default()
         }
     }
-    pub fn update(&mut self, gl:&glow::Context) {
+    pub fn update(&mut self) {
         for (id, img) in self.textures.iter_mut() {
             if img.texture == TextureKey::default() {
                 unsafe {
-                    let texture = gl.create_texture().unwrap();
-                    img.texture = texture;
-                    gl.bind_texture(glow::TEXTURE_2D, Some(img.texture));
-
-                    let level = 0;
-                    let internal_format = glow::RGBA as i32;
-                    let width = img.width as i32;
-                    let height = img.height as i32;
-                    log(&format!("{}", width));
-                    let border = 0;
-                    let src_format = glow::RGBA;
-                    let src_type = glow::UNSIGNED_BYTE;
-                    let pixels = Some(img.pixels.as_slice());
-                    gl.tex_image_2d(glow::TEXTURE_2D, level, internal_format, 
-                        width, height, border, src_format, src_type, pixels);
-
-                    gl.generate_mipmap(glow::TEXTURE_2D);
+                    img.load_texture(self.gl.clone());
                 }
-                log("texture created");
             }
         }
         

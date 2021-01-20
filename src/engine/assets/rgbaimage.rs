@@ -1,4 +1,8 @@
-use glow::WebTextureKey;
+use std::rc::Rc;
+
+use glow::{HasContext, WebTextureKey};
+
+use crate::shared::log;
 
 use super::Frame;
 pub type TextureKey = WebTextureKey;
@@ -13,15 +17,25 @@ pub struct RGBAImage {
 
 impl Default for RGBAImage {
     fn default() -> Self {
+
+        let mut default_pixels = [
+            255,0,0,255,
+            0,0,255,255,
+            0,0,255,255,
+            255,0,0,255
+        ];
+
+
         Self {
             height:2,
             width:2,
-            pixels:[].into(),
+            pixels:default_pixels.into(),
             texture:TextureKey::default()
         }
     }
 }
 
+// TODO: implement drop to free texture
 impl RGBAImage {
     pub fn flip(self) -> Self
     {
@@ -58,6 +72,29 @@ impl RGBAImage {
             height:self.height,
             pixels:pixels,
             texture:TextureKey::default()
+        }
+    }
+
+    pub unsafe fn load_texture(&mut self, gl:Rc<glow::Context>) {
+        if self.texture == TextureKey::default() {
+            self.texture = gl.create_texture().unwrap();;
+            gl.bind_texture(glow::TEXTURE_2D, Some(self.texture));
+
+            let level = 0;
+            let internal_format = glow::RGBA as i32;
+            let width = self.width as i32;
+            let height = self.height as i32;
+            log(&format!("{}", width));
+            let border = 0;
+            let src_format = glow::RGBA;
+            let src_type = glow::UNSIGNED_BYTE;
+            let pixels = Some(self.pixels.as_slice());
+            gl.tex_image_2d(glow::TEXTURE_2D, level, internal_format, 
+                width, height, border, src_format, src_type, pixels);
+
+            gl.generate_mipmap(glow::TEXTURE_2D);
+
+            log("texture created");
         }
     }
 
