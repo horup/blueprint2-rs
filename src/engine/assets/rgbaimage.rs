@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use glow::{HasContext, WebTextureKey};
+use glow::{HasContext, TEXTURE_MIN_FILTER, WebTextureKey};
 
 use crate::shared::log;
 
@@ -79,6 +79,8 @@ impl RGBAImage {
         if self.texture == TextureKey::default() {
             self.texture = gl.create_texture().unwrap();;
             gl.bind_texture(glow::TEXTURE_2D, Some(self.texture));
+            gl.tex_parameter_i32(glow::TEXTURE_2D, glow::TEXTURE_MIN_FILTER, glow::NEAREST as i32);
+            gl.tex_parameter_i32(glow::TEXTURE_2D, glow::TEXTURE_MAG_FILTER, glow::NEAREST as i32);
 
             let level = 0;
             let internal_format = glow::RGBA as i32;
