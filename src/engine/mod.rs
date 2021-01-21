@@ -24,3 +24,6 @@ pub use mesh::*;
 
 mod spritemesh;
 pub use spritemesh::*;
+
+mod renderer;
+pub use renderer::*;

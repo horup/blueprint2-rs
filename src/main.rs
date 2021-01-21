@@ -40,8 +40,8 @@ pub fn start() {
     let mut engine:Engine<BlueprintGame> = Engine::new(gl);
 
     render_loop.run(move |running| { 
-        engine.width = canvas.width() as i32;
-        engine.height = canvas.height() as i32;
+        engine.renderer.width = canvas.width() as i32;
+        engine.renderer.height = canvas.height() as i32;
         engine.update();
     });
 }

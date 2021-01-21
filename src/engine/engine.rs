@@ -9,21 +9,19 @@ use glow::*;
 
 use crate::engine::{Context as SharedContext};
 
-use super::{AssetKey, Assets, Event, Game, Mesh, Sprite, SpriteMesh, SpriteSheet, States, Transform};
-// TODO: use RC for glow::Context
+use super::{AssetKey, Assets, Event, Game, Mesh, Renderer, Sprite, SpriteMesh, SpriteSheet, States, Transform};
+
 pub struct Engine<T:Game> {
     pub assets:Assets,
     pub states:States<T>,
     gl:Rc<glow::Context>,
-    pub width:i32,
-    pub height:i32,
     pub game:T,
     tick_rate:u32,
-    sprite_meshes:HashMap<AssetKey<SpriteSheet>, SpriteMesh>,
     initialized:bool,
     current_time:f64,
     accumulator:f64,
-    t:f64
+    t:f64,
+    pub renderer:Renderer
 }
 
 impl<T:Game> Engine<T> {
@@ -34,14 +32,12 @@ impl<T:Game> Engine<T> {
             states:States::default(),
             gl:gl.clone(),
             game:T::default(),
-            width:0,
-            height:0,
-            sprite_meshes:HashMap::new(),
             initialized:false,
             accumulator:0.0,
             current_time:Self::now_as_secs(),
             t:0.0,
-            assets:Assets::new(gl.clone())
+            assets:Assets::new(gl.clone()),
+            renderer:Renderer::new(gl.clone())
         }
     }
 
@@ -87,49 +83,6 @@ impl<T:Game> Engine<T> {
         }
     }
 
-    pub unsafe fn draw_sprites(&mut self) {
-        let current = self.states.current();
-        for e in current.entities.iter() {
-            
-        }
-
-
-        for (entity, sprite) in current.entities.query::<&Sprite>().iter() {
-            if self.sprite_meshes.contains_key(&sprite.spritesheet) == false {
-                self.sprite_meshes.insert(sprite.spritesheet, SpriteMesh::new(&self.gl, 1024, sprite.spritesheet));
-            }
-        }
-
-        for sprite_mesh in self.sprite_meshes.values_mut() {
-            sprite_mesh.clear();
-        }
-
-        for (entity, (transform, sprite)) in current.entities.query::<(&Transform, &Sprite)>().iter() {
-            if let Some(sprite_mesh) = self.sprite_meshes.get_mut(&sprite.spritesheet) {
-                sprite_mesh.push_sprite(&self.assets, transform, sprite);
-            }
-        }
-
-        for sprite_mesh in self.sprite_meshes.values_mut() {
-            sprite_mesh.update(&self.gl);
-            sprite_mesh.draw(&self.gl, &self.assets);
-        }
-    }
-    
-    pub fn draw(&mut self, alpha:f64) {
-        let width = self.width;
-        let height = self.height;
-    
-        unsafe {
-            self.gl.viewport(0, 0, width, height);
-            self.gl.clear_color(0.1, 0.2, 0.3, 1.0);
-            self.gl.clear(glow::COLOR_BUFFER_BIT);
-            self.draw_sprites();
-          /*  for (_, mesh) in &self.meshes {
-                mesh.draw(&self.gl);
-            }*/
-        }
-    }
 
     fn update_game(&mut self, event:Event<T>) {
         let mut c = SharedContext {
@@ -180,6 +133,6 @@ impl<T:Game> Engine<T> {
         
         let current_time = self.current_time;
         //self.game.update(self.create_context(Event::Draw(current_time, frame_time, alpha)));
-        self.draw(alpha);
+        self.renderer.draw(alpha, &self.states, &self.assets);
     }
 }

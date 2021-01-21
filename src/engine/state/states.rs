@@ -23,7 +23,7 @@ impl<T:Game> States<T> {
         self.states.get_mut(0).expect("No current state!")
     }
 
-    pub fn current(&mut self) -> &State<T> {
+    pub fn current(&self) -> &State<T> {
         self.states.get(0).expect("No current state!")
     }
 
