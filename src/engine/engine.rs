@@ -55,34 +55,6 @@ impl<T:Game> Engine<T> {
         log(s);
     }
     
-    pub fn setup_shaders(&mut self) {
-        unsafe {
-    
-            let gl = &mut self.gl;
-            let vertex_shader_source = include_str!("./shaders/default.vert");
-            let fragment_shader_source = include_str!("./shaders/default.frag");
-    
-            let program = gl.create_program().expect("Cannot create program");
-        
-            let shader = gl.create_shader(glow::VERTEX_SHADER).expect("could not create shader");
-            gl.shader_source(shader, vertex_shader_source);
-            gl.compile_shader(shader);
-            gl.attach_shader(program, shader);
-    
-            let shader = gl.create_shader(glow::FRAGMENT_SHADER).expect("could not create shader");
-            gl.shader_source(shader, fragment_shader_source);
-            gl.compile_shader(shader);
-            gl.attach_shader(program, shader);
-    
-            gl.link_program(program);
-            if !gl.get_program_link_status(program) {
-                panic!(gl.get_program_info_log(program));
-            }
-    
-            gl.use_program(Some(program));
-        }
-    }
-
 
     fn update_game(&mut self, event:Event<T>) {
         let mut c = SharedContext {
@@ -99,7 +71,7 @@ impl<T:Game> Engine<T> {
     pub fn update(&mut self) {
         if self.initialized == false {
             self.initialized = true;
-            self.setup_shaders();
+            self.renderer.setup_shaders();
             self.update_game(Event::Initialize);
             self.assets.update();
             self.update();

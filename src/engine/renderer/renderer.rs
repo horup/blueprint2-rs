@@ -22,6 +22,35 @@ impl Renderer {
     }
 
     
+    pub fn setup_shaders(&mut self) {
+        unsafe {
+    
+            let gl = &mut self.gl;
+            let vertex_shader_source = include_str!("./shaders/default.vert");
+            let fragment_shader_source = include_str!("./shaders/default.frag");
+    
+            let program = gl.create_program().expect("Cannot create program");
+        
+            let shader = gl.create_shader(glow::VERTEX_SHADER).expect("could not create shader");
+            gl.shader_source(shader, vertex_shader_source);
+            gl.compile_shader(shader);
+            gl.attach_shader(program, shader);
+    
+            let shader = gl.create_shader(glow::FRAGMENT_SHADER).expect("could not create shader");
+            gl.shader_source(shader, fragment_shader_source);
+            gl.compile_shader(shader);
+            gl.attach_shader(program, shader);
+    
+            gl.link_program(program);
+            if !gl.get_program_link_status(program) {
+                panic!(gl.get_program_info_log(program));
+            }
+    
+            gl.use_program(Some(program));
+        }
+    }
+
+    
     pub unsafe fn draw_sprites<G:Game>(&mut self, alpha:f64, states:&States<G>, assets:&Assets) {
         let current = states.current();
         for e in current.entities.iter() {
