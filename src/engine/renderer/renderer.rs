@@ -57,7 +57,6 @@ impl Renderer {
             
         }
 
-
         for (entity, sprite) in current.entities.query::<&Sprite>().iter() {
             if self.sprite_meshes.contains_key(&sprite.spritesheet) == false {
                 self.sprite_meshes.insert(sprite.spritesheet, SpriteMesh::new(&self.gl, 1024, sprite.spritesheet));
