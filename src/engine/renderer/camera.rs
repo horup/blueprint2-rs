@@ -8,9 +8,10 @@ pub struct Camera {
 impl Default for Camera {
     fn default() -> Self {
 
-        let eye = Point3::new(0.0, 0.0, 10.0);
+        let eye = Point3::new(0.0, 0.0, 1.0);
         let target = Point3::new(0.0, 0.0, 0.0);
         let view = Isometry3::look_at_rh(&eye, &target, &Vector3::y());
+        //let view = Isometry3::identity();
         let mut projection = Matrix4::identity();
         projection = projection * 0.1;
         Self {

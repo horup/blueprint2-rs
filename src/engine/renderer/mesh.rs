@@ -70,11 +70,12 @@ impl Mesh {
     /// Draws a subset of the mesh where `count` is the number of vertices to draw
     pub unsafe fn draw_subset(&self, gl:&Context, program:WebProgramKey, count:usize, camera:&Camera) {
         let projection = gl.get_uniform_location(program, "projection");
-        if let Some(projection) = projection {
+        let view = gl.get_uniform_location(program, "view");
+        if let (Some(view), Some(projection)) = (view, projection) {
             log("test");
-            gl.bind_vertex_array(Some(self.vertex_array_object));
-            let view = camera.view.to_homogeneous();
+            gl.uniform_matrix_4_f32_slice(Some(&view), false, camera.view.to_homogeneous().as_slice());
             gl.uniform_matrix_4_f32_slice(Some(&projection), false, camera.projection.as_slice());
+            gl.bind_vertex_array(Some(self.vertex_array_object));
             let mut count = count;
             if count > self.vertices.len() {
                 count = self.vertices.len();
