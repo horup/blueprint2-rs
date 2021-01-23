@@ -6,3 +6,6 @@ pub use mesh::*;
 
 mod spritemesh;
 pub use spritemesh::*;
+
+mod camera;
+pub use camera::*;

@@ -1,14 +1,19 @@
 use std::{collections::HashMap, rc::Rc};
 
-use glow::HasContext;
+use glow::{HasContext, WebProgramKey};
+use nalgebra::{Matrix, Matrix4};
 
 use crate::game::{AssetKey, Assets, Game, Sprite, SpriteMesh, SpriteSheet, States, Transform};
+
+use super::Camera;
 
 pub struct Renderer {
     gl:Rc<glow::Context>,
     pub width:i32,
     pub height:i32,
-    sprite_meshes:HashMap<AssetKey<SpriteSheet>, SpriteMesh>
+    sprite_meshes:HashMap<AssetKey<SpriteSheet>, SpriteMesh>,
+    pub camera:Camera,
+    pub program:Option<WebProgramKey>
 }
 
 impl Renderer {
@@ -17,10 +22,11 @@ impl Renderer {
             gl,
             width:1,
             height:1,
-            sprite_meshes:HashMap::new()
+            sprite_meshes:HashMap::new(),
+            camera:Camera::default(),
+            program:None
         }
     }
-
     
     pub fn setup_shaders(&mut self) {
         unsafe {
@@ -46,7 +52,8 @@ impl Renderer {
                 panic!(gl.get_program_info_log(program));
             }
     
-            gl.use_program(Some(program));
+            self.program = Some(program);
+            gl.use_program(self.program);
         }
     }
 
@@ -73,9 +80,11 @@ impl Renderer {
             }
         }
 
-        for sprite_mesh in self.sprite_meshes.values_mut() {
-            sprite_mesh.update(&self.gl);
-            sprite_mesh.draw(&self.gl, &assets);
+        if let Some(program) = self.program {
+            for sprite_mesh in self.sprite_meshes.values_mut() {
+                sprite_mesh.update(&self.gl);
+                sprite_mesh.draw(&self.gl, program, &assets, &self.camera);
+            }
         }
     }
 

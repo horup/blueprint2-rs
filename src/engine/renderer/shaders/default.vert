@@ -4,7 +4,11 @@ layout (location = 1) in vec2 uv;
 
 out vec2 tex_coord;
 
+uniform mat4 view;
+uniform mat4 projection;
+
 void main() {
     tex_coord = uv;
-    gl_Position = vec4(pos, 1.0);
+
+    gl_Position =  projection * vec4(pos, 1.0);
 }

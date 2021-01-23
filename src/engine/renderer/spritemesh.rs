@@ -1,9 +1,9 @@
-use glow::{Context, HasContext};
+use glow::{Context, HasContext, WebProgramKey};
 use nalgebra::Vector3;
 
 use crate::{game::Vertex, shared::log};
 
-use super::super::{AssetKey, Assets, Mesh, Sprite, SpriteSheet, Transform};
+use super::{super::{AssetKey, Assets, Mesh, Sprite, SpriteSheet, Transform}, Camera};
 
 /// An object which maintains a single mesh consisting of one or more sprites
 pub struct SpriteMesh {
@@ -33,11 +33,11 @@ impl SpriteMesh {
         }
     }
 
-    pub unsafe fn draw(&self, gl:&Context, assets:&Assets) {
+    pub unsafe fn draw(&self, gl:&Context, program:WebProgramKey, assets:&Assets, camera:&Camera) {
         let sheet = assets.spritesheets.get(&self.sprite_sheet);
         let texture = assets.textures.get(&sheet.texture);
         gl.bind_texture(glow::TEXTURE_2D, Some(texture.texture));
-        self.mesh.draw_subset(gl, self.count * 6);
+        self.mesh.draw_subset(gl, program, self.count * 6, camera);
     }
 
     pub fn clear(&mut self) {

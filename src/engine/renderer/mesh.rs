@@ -1,10 +1,12 @@
-use glow::{Context, HasContext, WebBufferKey, WebVertexArrayKey};
-use web_sys::WebGlVertexArrayObject;
+use core::slice;
+
+use glow::{Context, HasContext, WebBufferKey, WebProgramKey, WebVertexArrayKey};
+use web_sys::{WebGlVertexArrayObject};
 
 use crate::{shared::{log}};
 use crate::engine::Vertex;
 
-use super::super::TextureKey;
+use super::{super::TextureKey, Camera};
 
 pub struct Mesh {
     pub vertices:Vec<Vertex>,
@@ -60,9 +62,26 @@ impl Mesh {
         gl.buffer_data_u8_slice(glow::ARRAY_BUFFER, &buffer, glow::DYNAMIC_DRAW);
     }
 
-    pub unsafe fn draw(&self, gl:&Context) {
-        gl.bind_vertex_array(Some(self.vertex_array_object));
-        gl.draw_arrays(glow::TRIANGLES, 0, self.vertices.len() as i32);
+    pub unsafe fn draw(&self, gl:&Context, program:WebProgramKey, camera:&Camera) {
+        self.draw_subset(gl, program, self.vertices.len(), camera);
+    }
+
+    
+    /// Draws a subset of the mesh where `count` is the number of vertices to draw
+    pub unsafe fn draw_subset(&self, gl:&Context, program:WebProgramKey, count:usize, camera:&Camera) {
+        let projection = gl.get_uniform_location(program, "projection");
+        if let Some(projection) = projection {
+            log("test");
+            gl.bind_vertex_array(Some(self.vertex_array_object));
+            let view = camera.view.to_homogeneous();
+            gl.uniform_matrix_4_f32_slice(Some(&projection), false, camera.projection.as_slice());
+            let mut count = count;
+            if count > self.vertices.len() {
+                count = self.vertices.len();
+            }
+            gl.draw_arrays(glow::TRIANGLES, 0, count as i32);
+        }
+
     }
 
     /// Copies the vertices storied in `vertices` into the mesh at `dest_index`
@@ -77,13 +96,4 @@ impl Mesh {
         }
     }
 
-    /// Draws a subset of the mesh where `count` is the number of vertices to draw
-    pub unsafe fn draw_subset(&self, gl:&Context, count:usize) {
-        gl.bind_vertex_array(Some(self.vertex_array_object));
-        let mut count = count;
-        if count > self.vertices.len() {
-            count = self.vertices.len();
-        }
-        gl.draw_arrays(glow::TRIANGLES, 0, count as i32);
-    }
 }
