@@ -72,7 +72,6 @@ impl Mesh {
         let projection = gl.get_uniform_location(program, "projection");
         let view = gl.get_uniform_location(program, "view");
         if let (Some(view), Some(projection)) = (view, projection) {
-            log("test");
             gl.uniform_matrix_4_f32_slice(Some(&view), false, camera.view.to_homogeneous().as_slice());
             gl.uniform_matrix_4_f32_slice(Some(&projection), false, camera.projection.as_slice());
             gl.bind_vertex_array(Some(self.vertex_array_object));
