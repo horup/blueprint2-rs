@@ -1,6 +1,6 @@
 use std::{collections::HashMap, rc::Rc};
 
-use glow::{HasContext, WebProgramKey};
+use glow::{HasContext, ONE_MINUS_SRC_ALPHA, SRC_ALPHA, WebProgramKey};
 use nalgebra::{Matrix, Matrix4};
 
 use crate::game::{AssetKey, Assets, Game, Sprite, SpriteMesh, SpriteSheet, States, Transform};
@@ -96,6 +96,8 @@ impl Renderer {
             self.gl.viewport(0, 0, width, height);
             self.gl.clear_color(0.1, 0.2, 0.3, 1.0);
             self.gl.clear(glow::COLOR_BUFFER_BIT);
+            self.gl.enable(glow::BLEND);
+            self.gl.blend_func(glow::SRC_ALPHA, glow::ONE_MINUS_SRC_ALPHA);
             self.draw_sprites(alpha, states, assets);
           /*  for (_, mesh) in &self.meshes {
                 mesh.draw(&self.gl);
