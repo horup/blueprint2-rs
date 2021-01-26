@@ -25,13 +25,13 @@ use crate::{game::{BlueprintGame, Engine}, shared::log};
 pub fn start() {
     let event_loop = EventLoop::new();
     use winit::platform::web::WindowExtWebSys;
-    let window = WindowBuilder::new()
+    let mut window = WindowBuilder::new()
         .with_title("A fantastic window!")
         .build(&event_loop)
         .unwrap();
 
     {
-
+        
         let document = web_sys::window().unwrap().document().unwrap();
         let body = document.body().unwrap();
         let canvas:HtmlCanvasElement = window.canvas();
@@ -46,7 +46,7 @@ pub fn start() {
         .unwrap();
 
 
-         let gl = glow::Context::from_webgl2_context(webgl2_context);
+        let gl = glow::Context::from_webgl2_context(webgl2_context);
         let mut engine:Engine<BlueprintGame> = Engine::new(gl);
 
         event_loop.run(move |event, _, control_flow| {
@@ -60,7 +60,7 @@ pub fn start() {
                 Event::MainEventsCleared => {
                     engine.renderer.width = canvas.width() as i32;
                     engine.renderer.height = canvas.height() as i32;
-                    engine.update();
+                    engine.update(&mut window);
                     window.request_redraw();
                 }
                 _ => (),

@@ -2,6 +2,7 @@ use std::{collections::HashMap, rc::Rc};
 
 use glow::{HasContext, ONE_MINUS_SRC_ALPHA, SRC_ALPHA, WebProgramKey};
 use nalgebra::{Matrix, Matrix4};
+use winit::window::Window;
 
 use crate::game::{AssetKey, Assets, Game, Sprite, SpriteMesh, SpriteSheet, States, Transform};
 
@@ -88,12 +89,15 @@ impl Renderer {
         }
     }
 
-    pub fn draw<G:Game>(&mut self, alpha:f64, states:&States<G>, assets:&Assets) {
+    pub fn draw<G:Game>(&mut self, alpha:f64, states:&States<G>, assets:&Assets, window:&mut Window) {
         let width = self.width;
         let height = self.height;
-    
+        let inner = window.inner_size();
         unsafe {
-            self.gl.viewport(0, 0, width, height);
+            self.gl.viewport(0, 0, inner.width as i32, inner.height as i32);
+
+            self.camera.set_orthogonal_projection(inner.width as f32 / 100.0, inner.height as f32 / 100.0);
+
             self.gl.clear_color(0.1, 0.2, 0.3, 1.0);
             self.gl.clear(glow::COLOR_BUFFER_BIT);
             self.gl.enable(glow::BLEND);

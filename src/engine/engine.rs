@@ -2,6 +2,7 @@ use std::{collections::HashMap, rc::Rc};
 
 use itertools::Itertools;
 use nalgebra::Vector3;
+use winit::window::Window;
 
 use crate::{shared::{self, HashId, log}};
 
@@ -68,13 +69,13 @@ impl<T:Game> Engine<T> {
         self.game.update(&mut c);
     }
 
-    pub fn update(&mut self) {
+    pub fn update(&mut self, window:&mut Window) {
         if self.initialized == false {
             self.initialized = true;
             self.renderer.setup_shaders();
             self.update_game(Event::Initialize);
             self.assets.update();
-            self.update();
+            self.update(window);
 
             return;
         }
@@ -105,6 +106,6 @@ impl<T:Game> Engine<T> {
         
         let current_time = self.current_time;
         //self.game.update(self.create_context(Event::Draw(current_time, frame_time, alpha)));
-        self.renderer.draw(alpha, &self.states, &self.assets);
+        self.renderer.draw(alpha, &self.states, &self.assets, window);
     }
 }
