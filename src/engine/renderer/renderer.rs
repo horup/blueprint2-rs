@@ -95,8 +95,8 @@ impl Renderer {
         let inner = window.inner_size();
         unsafe {
             self.gl.viewport(0, 0, inner.width as i32, inner.height as i32);
-
-            self.camera.set_orthogonal_projection(inner.width as f32 / 100.0, inner.height as f32 / 100.0);
+            //self.camera.set_orthogonal_projection(inner.width as f32 / 100.0, inner.height as f32 / 100.0);
+            self.camera.update(inner.width as f32, inner.height as f32);
 
             self.gl.clear_color(0.1, 0.2, 0.3, 1.0);
             self.gl.clear(glow::COLOR_BUFFER_BIT);

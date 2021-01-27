@@ -1,8 +1,10 @@
+use core::num;
+
 use image::DynamicImage;
 use nalgebra::Vector3;
 
 pub use crate::engine::*;
-use crate::shared::log;
+use crate::{engine, shared::log};
 
 #[derive(Default)]
 pub struct BlueprintGame {
@@ -30,20 +32,23 @@ impl Game for BlueprintGame {
                     frames:frames.into()
                 });
 
-                current.entities.spawn((
-                    Transform { position:Vector3::new(0.0, 0.0, 0.0)},
-                    Sprite {
-                        frame:0,
-                        spritesheet:"sheet01".into()
-                    }
-                ));
+                context.camera.zoom = 20.0;
 
-                current.entities.spawn((
-                    Transform { position:Vector3::new(0.5, 0.5, 0.0)},
-                    Sprite::default()
-                ));
+                let max = 10;
+                for i in 0..max*max {
+                    let x = i % max;
+                    let y = i / max;
 
-               
+                    current.entities.spawn((
+
+                        Transform { position:Vector3::new(x as f32 , y as f32, 0.0)},
+                        Sprite {
+                            frame:0,
+                            spritesheet:"sheet01".into()
+                        }
+                    ));
+    
+                }
             }
             Event::FixedStep(time, dt) => {
                 for (_, t) in current.entities.query_mut::<&mut Transform>() {

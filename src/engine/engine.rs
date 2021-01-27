@@ -63,7 +63,8 @@ impl<T:Game> Engine<T> {
             previous:&mut self.previous,*/
             event:event,
             states:&mut self.states,
-            assets:&mut self.assets
+            assets:&mut self.assets,
+            camera:&mut self.renderer.camera
         };
 
         self.game.update(&mut c);
