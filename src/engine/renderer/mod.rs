@@ -9,3 +9,6 @@ pub use spritemesh::*;
 
 mod camera;
 pub use camera::*;
+
+mod vertex;
+pub use vertex::*;

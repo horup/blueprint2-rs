@@ -1,9 +1,6 @@
 mod engine;
 pub use engine::*;
 
-mod vertex;
-pub use vertex::*;
-
 mod assets;
 pub use assets::*;
 
@@ -24,6 +21,9 @@ pub use renderer::*;
 
 mod systems;
 pub use systems::*;
+
+mod system;
+pub use system::*;
 
 mod components;
 pub use components::*;
