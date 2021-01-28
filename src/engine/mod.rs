@@ -22,5 +22,8 @@ pub use state::*;
 mod renderer;
 pub use renderer::*;
 
-mod system;
-pub use system::*;
+mod systems;
+pub use systems::*;
+
+mod components;
+pub use components::*;
