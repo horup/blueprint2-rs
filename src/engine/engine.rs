@@ -10,19 +10,20 @@ use glow::*;
 
 use crate::engine::{Context as SharedContext};
 
-use super::{AssetKey, Assets, Event, Game, Mesh, Renderer, Sprite, SpriteMesh, SpriteSheet, States, Transform};
+use super::{AssetKey, Assets, Event, Game, Mesh, Renderer, Sprite, SpriteMesh, SpriteSheet, States, System, Transform, system};
 
-pub struct Engine<T:Game> {
+pub struct Engine<G:Game> {
     pub assets:Assets,
-    pub states:States<T>,
+    pub states:States<G>,
     gl:Rc<glow::Context>,
-    pub game:T,
+    pub game:G,
     tick_rate:u32,
     initialized:bool,
     current_time:f64,
     accumulator:f64,
     t:f64,
-    pub renderer:Renderer
+    pub renderer:Renderer,
+    pub systems:Vec<Box<dyn System<G>>>
 }
 
 impl<T:Game> Engine<T> {
@@ -38,7 +39,8 @@ impl<T:Game> Engine<T> {
             current_time:Self::now_as_secs(),
             t:0.0,
             assets:Assets::new(gl.clone()),
-            renderer:Renderer::new(gl.clone())
+            renderer:Renderer::new(gl.clone()),
+            systems:Vec::new()
         }
     }
 

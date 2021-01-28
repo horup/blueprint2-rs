@@ -22,17 +22,6 @@ impl Default for Frame {
         }
     }
 }
-/*
-#[derive(Debug, Copy, Clone, PartialOrd, PartialEq)]
-pub enum Animation {
-    Default,
-    None,
-    LoopForwardBackward,
-    LoopBackwardForward,
-    LoopReset,
-    ForwardStop,
-    Stopped
-}*/
 
 pub struct SpriteSheet {
     pub texture:AssetKey<RGBAImage>,

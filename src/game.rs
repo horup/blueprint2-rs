@@ -44,7 +44,8 @@ impl Game for BlueprintGame {
                         Transform { position:Vector3::new(x as f32 , y as f32, 0.0)},
                         Sprite {
                             frame:0,
-                            spritesheet:"sheet01".into()
+                            spritesheet:"sheet01".into(),
+                            ..Sprite::default()
                         }
                     ));
     
