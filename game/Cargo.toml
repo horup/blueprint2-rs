@@ -1,0 +1,42 @@
+[package]
+name = "blueprint2-rs"
+version = "0.1.0"
+authors = ["Horup <sah@sah.dk>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+  'CanvasRenderingContext2d',
+  'Document',
+  'Element',
+  'HtmlCanvasElement',
+  'console'
+]
+
+[dependencies.image]
+version = "0.23.12"
+features = ['png']
+
+[dependencies.winit]
+version = "0.24.0"
+features = ["web-sys"]
+
+[dependencies]
+js-sys = "0.3.46"
+wasm-bindgen = "0.2.69"
+glow = "0.6.1"
+nalgebra = "0.23.2"
+engine = { path = "../engine" }
+
+
+[build]
+target = "wasm32-unknown-unknown"
+
+

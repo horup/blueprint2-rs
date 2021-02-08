@@ -68,10 +68,9 @@ checksum = "0d8c1fef690941d3e7788d328517591fecc684c084084702d6ff1641e993699a"
 name = "blueprint2-rs"
 version = "0.1.0"
 dependencies = [
+ "engine",
  "glow",
- "hecs",
  "image",
- "itertools",
  "js-sys",
  "nalgebra",
  "wasm-bindgen",
@@ -387,6 +386,21 @@ name = "either"
 version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
+
+[[package]]
+name = "engine"
+version = "0.1.0"
+dependencies = [
+ "glow",
+ "hecs",
+ "image",
+ "itertools",
+ "js-sys",
+ "nalgebra",
+ "wasm-bindgen",
+ "web-sys",
+ "winit",
+]
 
 [[package]]
 name = "fnv"

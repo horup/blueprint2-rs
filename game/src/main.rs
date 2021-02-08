@@ -1,13 +1,14 @@
 
 use core::panic;
 
+use engine::Engine;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use glow::*;
 use web_sys::{CssStyleDeclaration, HtmlCanvasElement};
 use winit::{event::{Event, WindowEvent}, event_loop::{ControlFlow, EventLoop}, window::WindowBuilder};
 
-use crate::{game::{BlueprintGame, Engine}};
+use crate::{game::BlueprintGame};
 
 //use crate::engine::*;
 //use crate::game::*;

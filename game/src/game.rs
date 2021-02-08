@@ -3,8 +3,7 @@ use core::num;
 use image::DynamicImage;
 use nalgebra::Vector3;
 
-pub use crate::engine::*;
-use crate::engine::log;
+use engine::*;
 
 #[derive(Default)]
 pub struct BlueprintGame {

@@ -1,8 +1,7 @@
 use glow::{Context, HasContext, WebProgramKey};
 use nalgebra::Vector3;
 
-use super::{Mesh, Vertex};
-use crate::{Assets, Camera, Sprite, Transform, engine::{AssetKey, SpriteSheet}};
+use crate::{AssetKey, Assets, Camera, Mesh, Sprite, SpriteSheet, Transform, Vertex};
 
 
 /// An object which maintains a single mesh consisting of one or more sprites

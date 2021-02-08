@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use hecs::{DynamicBundle, Entity, World};
 
-use crate::game::{Game, Sprite, Transform};
+use crate::{Game, Sprite, Transform};
 
 #[derive(Default)]
 pub struct State<G:Game> {

@@ -1,4 +1,4 @@
-use crate::game::{Context, Game, System};
+use crate::{Context, Game, System};
 
 pub struct AnimationSystem {
 

@@ -1,3 +1,4 @@
+#![allow(warnings)]
 mod engine;
 pub use engine::*;
 

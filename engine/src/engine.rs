@@ -4,11 +4,7 @@ use itertools::Itertools;
 use nalgebra::Vector3;
 use winit::window::Window;
 
-use glow::*;
-
-use crate::engine::{Context as SharedContext};
-
-use super::{AssetKey, Assets, Event, Game, SpriteSheet, States, System, Transform, log};
+use super::{AssetKey, Assets, Event, Game, SpriteSheet, States, System, Transform, log, Context as SharedContext};
 use super::{systems::Renderer};
 
 pub struct Engine<G:Game> {

@@ -4,7 +4,7 @@ use glow::{HasContext, ONE_MINUS_SRC_ALPHA, SRC_ALPHA, WebProgramKey};
 use nalgebra::{Matrix, Matrix4};
 use winit::window::Window;
 
-use crate::game::{AssetKey, Assets, Game, Sprite, SpriteMesh, SpriteSheet, States, Transform};
+use crate::{AssetKey, SpriteMesh, SpriteSheet, Assets, Game, Sprite, States, Transform};
 
 use super::Camera;
 
