@@ -1,7 +1,6 @@
 use std::{collections::HashMap,  io::Cursor, rc::Rc};
 use glow::*;
 use image::ImageDecoder;
-use crate::shared::{HashId, log};
 
 use super::{AssetCollection, AssetKey, RGBAImage, SpriteSheet, TextureKey};
 

@@ -16,9 +16,6 @@ pub use game::*;
 mod state;
 pub use state::*;
 
-mod renderer;
-pub use renderer::*;
-
 mod systems;
 pub use systems::*;
 
@@ -27,3 +24,6 @@ pub use system::*;
 
 mod components;
 pub use components::*;
+
+mod log;
+pub use log::*;

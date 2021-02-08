@@ -1,7 +1,5 @@
 use std::default;
 
-use crate::shared::HashId;
-
 use super::{AssetKey, RGBAImage};
 
 #[derive(Clone, Copy, PartialEq)]

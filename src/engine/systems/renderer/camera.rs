@@ -1,7 +1,4 @@
-use std::default;
-
 use nalgebra::{Isometry, Isometry3, Matrix, Matrix4, Orthographic3, Perspective3, Point3, Vector3};
-
 
 pub struct Camera {
     pub view:Isometry3<f32>,

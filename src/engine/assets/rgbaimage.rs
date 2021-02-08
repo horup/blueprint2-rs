@@ -2,8 +2,6 @@ use std::rc::Rc;
 
 use glow::{HasContext, TEXTURE_MIN_FILTER, WebTextureKey};
 
-use crate::shared::log;
-
 use super::Frame;
 pub type TextureKey = WebTextureKey;
 

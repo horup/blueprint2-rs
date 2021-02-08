@@ -3,10 +3,7 @@ use core::slice;
 use glow::{Context, HasContext, WebBufferKey, WebProgramKey, WebVertexArrayKey};
 use web_sys::{WebGlVertexArrayObject};
 
-use crate::{shared::{log}};
-use crate::engine::Vertex;
-
-use super::{super::TextureKey, Camera};
+use super::{Camera, Vertex};
 
 pub struct Mesh {
     pub vertices:Vec<Vertex>,

@@ -4,7 +4,7 @@ use image::DynamicImage;
 use nalgebra::Vector3;
 
 pub use crate::engine::*;
-use crate::{engine, shared::log};
+use crate::engine::log;
 
 #[derive(Default)]
 pub struct BlueprintGame {

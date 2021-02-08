@@ -7,7 +7,7 @@ use glow::*;
 use web_sys::{CssStyleDeclaration, HtmlCanvasElement};
 use winit::{event::{Event, WindowEvent}, event_loop::{ControlFlow, EventLoop}, window::WindowBuilder};
 
-use crate::{game::{BlueprintGame, Engine}, shared::log};
+use crate::{game::{BlueprintGame, Engine}};
 
 //use crate::engine::*;
 //use crate::game::*;

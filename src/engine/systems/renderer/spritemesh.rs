@@ -1,9 +1,9 @@
 use glow::{Context, HasContext, WebProgramKey};
 use nalgebra::Vector3;
 
-use crate::{game::Vertex, shared::log};
+use super::{Mesh, Vertex};
+use crate::{Assets, Camera, Sprite, Transform, engine::{AssetKey, SpriteSheet}};
 
-use super::{super::{AssetKey, Assets, Mesh, Sprite, SpriteSheet, Transform}, Camera};
 
 /// An object which maintains a single mesh consisting of one or more sprites
 pub struct SpriteMesh {

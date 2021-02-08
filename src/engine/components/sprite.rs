@@ -1,4 +1,4 @@
-use crate::{game::{AssetKey, SpriteSheet}, shared::HashId};
+use crate::{game::{AssetKey, SpriteSheet}};
 
 #[derive(Debug, Copy, Clone, PartialOrd, PartialEq)]
 pub enum AnimationState {
