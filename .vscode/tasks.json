@@ -2,6 +2,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"path": "./game/package.json",
 			"type": "npm",
 			"script": "serve",
 			"problemMatcher": [
