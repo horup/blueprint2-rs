@@ -1,7 +1,7 @@
 
 use core::panic;
 
-use engine::Engine;
+use engine::{Engine, Game};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use glow::*;
@@ -49,7 +49,7 @@ pub fn start() {
 
         let gl = glow::Context::from_webgl2_context(webgl2_context);
         let mut engine:Engine<BlueprintGame> = Engine::new(gl);
-
+        let mut game = BlueprintGame::default();
         event_loop.run(move |event, _, control_flow| {
             *control_flow = ControlFlow::Poll;
 
@@ -61,7 +61,7 @@ pub fn start() {
                 Event::MainEventsCleared => {
                     engine.renderer.width = canvas.width() as i32;
                     engine.renderer.height = canvas.height() as i32;
-                    engine.update(&mut window);
+                    engine.update(&mut window, &mut game);
                     window.request_redraw();
                 }
                 _ => (),

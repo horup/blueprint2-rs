@@ -1,3 +1,5 @@
+use crate::System;
+
 use super::{Assets, Camera, Event, Game, States};
 
 pub struct Context<'a, T:Game> {

@@ -11,7 +11,6 @@ pub struct Engine<G:Game> {
     pub assets:Assets,
     pub states:States<G>,
     gl:Rc<glow::Context>,
-    pub game:G,
     tick_rate:u32,
     initialized:bool,
     current_time:f64,
@@ -28,7 +27,6 @@ impl<T:Game> Engine<T> {
             tick_rate:20,
             states:States::default(),
             gl:gl.clone(),
-            game:T::default(),
             initialized:false,
             accumulator:0.0,
             current_time:Self::now_as_secs(),
@@ -64,16 +62,25 @@ impl<T:Game> Engine<T> {
             camera:&mut self.renderer.camera
         };
 
-        self.game.update(&mut c);
+        for system in &mut self.systems {
+            system.update(&mut c);
+        }
+
+        //self.game.update(&mut c);
     }
 
-    pub fn update(&mut self, window:&mut Window) {
+    pub fn push_system(&mut self, system:Box<dyn System<T>>) {
+        self.systems.push(system);
+    }
+
+    pub fn update(&mut self, window:&mut Window, game:&mut T) {
         if self.initialized == false {
             self.initialized = true;
             self.renderer.setup_shaders();
             self.update_game(Event::Initialize);
+            game.setup(self);
             self.assets.update();
-            self.update(window);
+            self.update(window, game);
 
             return;
         }

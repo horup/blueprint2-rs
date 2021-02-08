@@ -5,15 +5,51 @@ use nalgebra::Vector3;
 
 use engine::*;
 
+use crate::Animator;
+
 #[derive(Default)]
 pub struct BlueprintGame {
-
 }
 
 impl Game for BlueprintGame {
     type GameEvent = ();
     type GameComponent1 = ();
 
+    fn setup(&mut self, engine:&mut Engine<Self>) {
+        let mut assets = &mut engine.assets;
+        let sheet01 = assets.load_texture_from_png_bytes("sheet01".into(), include_bytes!("./assets/textures/spritesheet.png"));
+        
+        let frames = [
+            sheet01.frame(0, 0, 16, 16), 
+            sheet01.frame(0, 16, 16, 16)];
+        assets.load_spritesheet("sheet01".into(), 
+        SpriteSheet {
+            texture:"sheet01".into(),
+            frames:frames.into()
+        });
+
+        engine.renderer.camera.zoom = 20.0;
+
+        let max = 10;
+        for i in 0..max*max {
+            let x = i % max;
+            let y = i / max;
+
+            engine.states.current_mut().entities.spawn((
+
+                Transform { position:Vector3::new(x as f32 , y as f32, 0.0)},
+                Sprite {
+                    frame:0,
+                    spritesheet:"sheet01".into(),
+                    ..Sprite::default()
+                }
+            ));
+
+        }
+        
+        engine.push_system(Box::new(Animator {}));
+    }
+/*
     fn update(&mut self, context:&mut Context<Self>) {
         let current = context.states.current_mut();
         match context.event {
@@ -57,7 +93,7 @@ impl Game for BlueprintGame {
 
                 for (_, s) in current.entities.query_mut::<&mut Sprite>() {
                     //t.position.x += 0.1 * dt as f32;
-                    s.frame += 1;
+                    //s.frame += 1;
                 }
             }
             Event::Draw(_,_,_) => {
@@ -65,7 +101,7 @@ impl Game for BlueprintGame {
             }
             Event::Game(_) => {}
         }
-    }
+    }*/
 
 }
 
