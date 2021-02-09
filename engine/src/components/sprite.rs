@@ -32,6 +32,6 @@ impl Default for Animation {
 #[derive(Clone, Copy, Default)]
 pub struct Sprite {
     pub spritesheet:AssetKey<SpriteSheet>,
-    pub frame:u16,
+    pub frame:f32,
     pub animation:Animation
 }
