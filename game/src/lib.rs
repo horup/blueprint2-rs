@@ -8,3 +8,6 @@ pub use main::*;
 
 mod animator;
 pub use animator::*;
+
+mod aisystem;
+pub use aisystem::*;

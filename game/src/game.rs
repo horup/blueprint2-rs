@@ -5,7 +5,7 @@ use nalgebra::Vector3;
 
 use engine::*;
 
-use crate::Animator;
+use crate::{AISystem, Animator};
 
 #[derive(Default)]
 pub struct BlueprintGame {
@@ -48,6 +48,7 @@ impl Game for BlueprintGame {
         }
         
         engine.push_system(Box::new(Animator {}));
+        engine.push_system(Box::new(AISystem {}));
     }
 /*
     fn update(&mut self, context:&mut Context<Self>) {
