@@ -1,6 +1,6 @@
-use crate::Game;
+use crate::{Event, Game};
 use crate::Context;
 pub trait System<S:Game> {
-    fn update(&mut self, context:&mut Context<S>) {
+    fn update(&mut self, event:&Event<S>, context:&mut Context<S>) {
     }
 }

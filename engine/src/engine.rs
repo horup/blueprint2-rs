@@ -56,14 +56,13 @@ impl<T:Game> Engine<T> {
         let mut c = SharedContext {
            /* current:&mut self.current,
             previous:&mut self.previous,*/
-            event:event,
             states:&mut self.states,
             assets:&mut self.assets,
             camera:&mut self.renderer.camera
         };
 
         for system in &mut self.systems {
-            system.update(&mut c);
+            system.update(&event, &mut c);
         }
 
         //self.game.update(&mut c);
