@@ -5,10 +5,10 @@ use super::Game;
 pub enum Event<G:Game> {
     Initialize,
     /// `time`, `delta_time`
-    FixedStep(f64, f64),
+    FixedStep(f32, f32),
 
     /// `time`, `delta_time`, `alpha`
-    Draw(f64, f64, f64),
+    Draw(f32, f32, f32),
 
     Game(G::GameEvent)
 }

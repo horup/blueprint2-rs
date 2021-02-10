@@ -101,7 +101,7 @@ impl<T:Game> Engine<T> {
         while self.accumulator >= dt {
             //self.previous = self.current.clone();
             let t = self.t;
-            self.update_game(Event::FixedStep(t, dt));
+            self.update_game(Event::FixedStep(t as f32, dt as f32));
             self.t += dt;
             self.accumulator -= dt;
         }
