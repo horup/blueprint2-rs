@@ -5,7 +5,7 @@ use nalgebra::Vector3;
 use winit::window::Window;
 
 use super::{AssetKey, Assets, Event, Game, SpriteSheet, States, System, Transform, log, Context as SharedContext};
-use super::{systems::Renderer};
+use super::{engine_systems::Renderer};
 
 pub struct Engine<G:Game> {
     pub assets:Assets,
@@ -17,7 +17,7 @@ pub struct Engine<G:Game> {
     accumulator:f64,
     t:f64,
     pub renderer:Renderer,
-    pub systems:Vec<Box<dyn System<G>>>
+    systems:Vec<Box<dyn System<G>>>
 }
 
 impl<T:Game> Engine<T> {
