@@ -4,9 +4,9 @@ use std::{any::{Any, TypeId}, marker::PhantomData};
 use crate::{Event, Game, log};
 use crate::Context;
 pub trait System<G:Game> {
-    fn on_event(&mut self, event:&Event<G>, context:&mut Context<G>) {
+    /*fn on_event(&mut self, event:&Event<G>, context:&mut Context<G>) {
         // nop
-    }
+    }*/
 
     fn on_step(&mut self, time:f32, delta_time:f32, context:&mut Context<G>) {
         // nop

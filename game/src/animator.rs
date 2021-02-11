@@ -6,17 +6,10 @@ pub struct Animator {
 }
 
 impl<G:Game> System<G> for Animator {
-    fn on_event(&mut self, event:&Event<G>, context:&mut Context<G>) {
-        match event {
-            engine::Event::Initialize => {}
-            engine::Event::Step(_, dt) => {
-                let current = context.states.current_mut();
-                for (_, sprite) in current.entities.query_mut::<(&mut Sprite)>() {
-                    sprite.frame += 1.0 * *dt as f32;
-                }
-            }
-            engine::Event::Draw(_, _, _) => {}
-            engine::Event::GameEvent(_) => {}
+    fn on_step(&mut self, time:f32, delta_time:f32, context:&mut Context<G>) {
+        let current = context.states.current_mut();
+        for (_, sprite) in current.entities.query_mut::<(&mut Sprite)>() {
+            sprite.frame += 1.0 * delta_time as f32;
         }
     }
 }

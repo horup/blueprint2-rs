@@ -66,7 +66,7 @@ impl<T:Game> Engine<T> {
         };
 
         for system in &mut self.systems_old {
-            system.on_event(&event, &mut c);
+            //system.on_event(&event, &mut c);
             match event {
                 Event::Initialize => {system.on_initialize(&mut c)}
                 Event::Step(time, delta_time) => {system.on_step(time, delta_time, &mut c)}
