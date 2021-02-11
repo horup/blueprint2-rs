@@ -3,8 +3,25 @@ use std::{any::{Any, TypeId}, marker::PhantomData};
 
 use crate::{Event, Game, log};
 use crate::Context;
-pub trait System<S:Game> {
-    fn update(&mut self, event:&Event<S>, context:&mut Context<S>) {
+pub trait System<G:Game> {
+    fn on_event(&mut self, event:&Event<G>, context:&mut Context<G>) {
+        // nop
+    }
+
+    fn on_step(&mut self, time:f32, delta_time:f32, context:&mut Context<G>) {
+        // nop
+    }
+
+    fn on_initialize(&mut self, context:&mut Context<G>) {
+        // nop
+    }
+
+    fn on_draw(&mut self, time:f32, delta_time:f32, alpha:f32, context:&mut Context<G>) {
+        // nop
+    }
+
+    fn on_game_event(&mut self, game_event:G::GameEvent, context:&mut Context<G>) {
+        //  nop
     }
 }
 

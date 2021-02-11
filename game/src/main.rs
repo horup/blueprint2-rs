@@ -1,14 +1,14 @@
 
 use core::panic;
 
-use engine::{Engine, Game};
+use engine::{Engine, Game, Systems, log};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use glow::*;
 use web_sys::{CssStyleDeclaration, HtmlCanvasElement};
 use winit::{event::{Event, WindowEvent}, event_loop::{ControlFlow, EventLoop}, window::WindowBuilder};
 
-use crate::{game::BlueprintGame};
+use crate::{Animator, game::BlueprintGame};
 
 //use crate::engine::*;
 //use crate::game::*;
@@ -24,6 +24,13 @@ use crate::{game::BlueprintGame};
 
 #[wasm_bindgen(start)]
 pub fn start() {
+    let mut systems:Systems<BlueprintGame> = Systems::default();
+    systems.add::<Animator>();
+    let r = systems.has::<Animator>();
+    if r == true {
+        log("true story");
+    }
+    return;
     let event_loop = EventLoop::new();
     use winit::platform::web::WindowExtWebSys;
     let mut window = WindowBuilder::new()

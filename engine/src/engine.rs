@@ -4,6 +4,8 @@ use itertools::Itertools;
 use nalgebra::Vector3;
 use winit::window::Window;
 
+use crate::Systems;
+
 use super::{AssetKey, Assets, Event, Game, SpriteSheet, States, System, Transform, log, Context as SharedContext};
 use super::{engine_systems::Renderer};
 
@@ -17,7 +19,8 @@ pub struct Engine<G:Game> {
     accumulator:f64,
     t:f64,
     pub renderer:Renderer,
-    systems:Vec<Box<dyn System<G>>>
+    systems_old:Vec<Box<dyn System<G>>>,
+    systems:Systems<G>
 }
 
 impl<T:Game> Engine<T> {
@@ -33,7 +36,8 @@ impl<T:Game> Engine<T> {
             t:0.0,
             assets:Assets::new(gl.clone()),
             renderer:Renderer::new(gl.clone()),
-            systems:Vec::new()
+            systems_old:Vec::new(),
+            systems:Systems::default()
         }
     }
 
@@ -61,15 +65,21 @@ impl<T:Game> Engine<T> {
             camera:&mut self.renderer.camera
         };
 
-        for system in &mut self.systems {
-            system.update(&event, &mut c);
+        for system in &mut self.systems_old {
+            system.on_event(&event, &mut c);
+            match event {
+                Event::Initialize => {system.on_initialize(&mut c)}
+                Event::Step(time, delta_time) => {system.on_step(time, delta_time, &mut c)}
+                Event::Draw(time, delta_time, alpha) => {system.on_draw(time, delta_time, alpha, &mut c)}
+                Event::GameEvent(game_event) => {system.on_game_event(game_event, &mut c)}
+            }
         }
 
         //self.game.update(&mut c);
     }
 
     pub fn push_system(&mut self, system:Box<dyn System<T>>) {
-        self.systems.push(system);
+        self.systems_old.push(system);
     }
 
     pub fn update(&mut self, window:&mut Window, game:&mut T) {
@@ -101,7 +111,7 @@ impl<T:Game> Engine<T> {
         while self.accumulator >= dt {
             //self.previous = self.current.clone();
             let t = self.t;
-            self.update_game(Event::FixedStep(t as f32, dt as f32));
+            self.update_game(Event::Step(t as f32, dt as f32));
             self.t += dt;
             self.accumulator -= dt;
         }
