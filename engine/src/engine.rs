@@ -19,11 +19,10 @@ pub struct Engine<G:Game> {
     accumulator:f64,
     t:f64,
     pub renderer:Renderer,
-    systems_old:Vec<Box<dyn System<G>>>,
-    systems:Systems<G>
+    pub systems:Systems<G>
 }
 
-impl<T:Game> Engine<T> {
+impl<T:Game + 'static> Engine<T> {
     pub fn new(gl:glow::Context) -> Self {
         let gl = Rc::new(gl);
         Self {
@@ -36,7 +35,6 @@ impl<T:Game> Engine<T> {
             t:0.0,
             assets:Assets::new(gl.clone()),
             renderer:Renderer::new(gl.clone()),
-            systems_old:Vec::new(),
             systems:Systems::default()
         }
     }
@@ -56,7 +54,7 @@ impl<T:Game> Engine<T> {
     }
     
 
-    fn update_game(&mut self, event:Event<T>) {
+    fn emit_event(&mut self, event:&Event<T>) {
         let mut c = SharedContext {
            /* current:&mut self.current,
             previous:&mut self.previous,*/
@@ -65,28 +63,15 @@ impl<T:Game> Engine<T> {
             camera:&mut self.renderer.camera
         };
 
-        for system in &mut self.systems_old {
-            //system.on_event(&event, &mut c);
-            match event {
-                Event::Initialize => {system.on_initialize(&mut c)}
-                Event::Step(time, delta_time) => {system.on_step(time, delta_time, &mut c)}
-                Event::Draw(time, delta_time, alpha) => {system.on_draw(time, delta_time, alpha, &mut c)}
-                Event::GameEvent(game_event) => {system.on_game_event(game_event, &mut c)}
-            }
-        }
-
+        self.systems.on_event(&event, &mut c);
         //self.game.update(&mut c);
-    }
-
-    pub fn push_system(&mut self, system:Box<dyn System<T>>) {
-        self.systems_old.push(system);
     }
 
     pub fn update(&mut self, window:&mut Window, game:&mut T) {
         if self.initialized == false {
             self.initialized = true;
             self.renderer.setup_shaders();
-            self.update_game(Event::Initialize);
+            self.emit_event(&Event::Initialize);
             game.setup(self);
             self.assets.update();
             self.update(window, game);
@@ -111,7 +96,7 @@ impl<T:Game> Engine<T> {
         while self.accumulator >= dt {
             //self.previous = self.current.clone();
             let t = self.t;
-            self.update_game(Event::Step(t as f32, dt as f32));
+            self.emit_event(&Event::Step(t as f32, dt as f32));
             self.t += dt;
             self.accumulator -= dt;
         }

@@ -8,7 +8,7 @@ pub trait System<G:Game> {
         // nop
     }*/
 
-    fn on_step(&mut self, time:f32, delta_time:f32, context:&mut Context<G>) {
+    fn on_step(&mut self, time:&f32, delta_time:&f32, context:&mut Context<G>) {
         // nop
     }
 
@@ -16,26 +16,25 @@ pub trait System<G:Game> {
         // nop
     }
 
-    fn on_draw(&mut self, time:f32, delta_time:f32, alpha:f32, context:&mut Context<G>) {
+    fn on_draw(&mut self, time:&f32, delta_time:&f32, alpha:&f32, context:&mut Context<G>) {
         // nop
     }
 
-    fn on_game_event(&mut self, game_event:G::GameEvent, context:&mut Context<G>) {
+    fn on_game_event(&mut self, game_event:&G::GameEvent, context:&mut Context<G>) {
         //  nop
     }
+
+    fn as_any(&self) -> &dyn Any;
 }
 
 #[derive(Default)]
 pub struct Systems<G:Game> { 
-    systems:Vec<Box<dyn Any>>,
+    systems:Vec<Box<dyn System<G>>>,
     marker:PhantomData<G>
 }
 
 impl<G:Game + 'static> Systems<G> {
     pub fn add<T:System<G> + Default + 'static>(&mut self) -> bool {
-        let t_id = TypeId::of::<Box<T>>();
-        log(&format!("add {:?}", t_id));
-
         if self.has::<T>() == false {
             self.systems.push(Box::new(T::default()));
             return true;
@@ -47,7 +46,7 @@ impl<G:Game + 'static> Systems<G> {
     pub fn has<T:System<G> + 'static>(&self) -> bool {
         for system in &self.systems {
             let any = system.as_ref();
-            if let Some(as_t) = any.downcast_ref::<T>() {
+            if let Some(as_t) = any.as_any().downcast_ref::<T>() {
                 return true;
             }
         }
@@ -61,5 +60,16 @@ impl<G:Game + 'static> Systems<G> {
             
         }
         panic!();
+    }
+
+    pub fn on_event(&mut self, e:&Event<G>, context:&mut Context<G>) {
+        for system in &mut self.systems { 
+            match e {
+                Event::Initialize => {system.on_initialize(context)}
+                Event::Step(time, delta_time) => {system.on_step(time, delta_time, context)}
+                Event::Draw(time, delta_time, alpha) => {system.on_draw(time, delta_time, alpha, context)}
+                Event::GameEvent(game_event) => {system.on_game_event(game_event, context)}
+            }
+        }
     }
 }

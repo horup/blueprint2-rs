@@ -47,8 +47,8 @@ impl Game for BlueprintGame {
 
         }
         
-        engine.push_system(Box::new(Animator {}));
-        engine.push_system(Box::new(AISystem {}));
+        engine.systems.add::<Animator>();
+        engine.systems.add::<AISystem>();
     }
 /*
     fn update(&mut self, context:&mut Context<Self>) {

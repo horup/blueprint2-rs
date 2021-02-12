@@ -24,13 +24,6 @@ use crate::{Animator, game::BlueprintGame};
 
 #[wasm_bindgen(start)]
 pub fn start() {
-    let mut systems:Systems<BlueprintGame> = Systems::default();
-    systems.add::<Animator>();
-    let r = systems.has::<Animator>();
-    if r == true {
-        log("true story");
-    }
-    return;
     let event_loop = EventLoop::new();
     use winit::platform::web::WindowExtWebSys;
     let mut window = WindowBuilder::new()
